@@ -54,8 +54,7 @@ public sealed class JumpStart
             }
         };
         
-        etcdClient.WatchAsync(
-            // "animals/",
+        _ = etcdClient.WatchAsync(
             request,
             (WatchEvent[] response) =>
             {

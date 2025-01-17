@@ -1,5 +1,6 @@
 .DS_Store
 .idea
 inbox.md
+TestResults/
 bin/
 obj/
