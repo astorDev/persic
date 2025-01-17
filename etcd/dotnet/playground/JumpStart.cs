@@ -25,28 +25,21 @@ public sealed class JumpStart
     [TestMethod]
     public async Task Watch()
     {
-        etcdClient.WatchAsync(
-                "dog",
-                (WatchEvent[] response) =>
+        _ = etcdClient.WatchAsync(
+            "dog",
+            (WatchEvent[] response) =>
+            {
+                Console.WriteLine("received watch response");
+                
+                foreach (var watchEvent in response)
                 {
-                    Console.WriteLine("received watch response");
-
-                    foreach (var watchEvent in response)
-                    {
-                        Console.WriteLine($"Received event: {watchEvent.Key} -> {watchEvent.Value}. ({watchEvent.Type})");
-                    }
+                    Console.WriteLine($"Received event: {watchEvent.Key} -> {watchEvent.Value}. ({watchEvent.Type})");
                 }
-            );
-
-        etcdClient.Put("dog", "comes");
-        etcdClient.Put("dog", "lays");
+            }
+        );
 
         await etcdClient.PutAsync("dog", "sits");
         await etcdClient.PutAsync("dog", "runs");
-        
-        //await Task.Delay(100);
-        
-        await etcdClient.PutAsync("dog", "barks");
     }
     
     [TestMethod]
