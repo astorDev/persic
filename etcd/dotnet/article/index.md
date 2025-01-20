@@ -1,6 +1,6 @@
 # etcd with .NET
 
-> Using etcd key-value store in C# - Basic Put, Get, change listening, and transaction.
+> Using etcd key-value store in C#: writing, reading key-value pairs, listening for changes, and executing a transaction.
 
 ![Yet another Key-Value store with C#]()
 
