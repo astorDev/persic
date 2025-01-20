@@ -1,1 +1,20 @@
 # etcd with .NET
+
+> Using etcd key-value store in C# - Basic Put, Get, change listening, and transaction.
+
+![Yet another Key-Value store with C#]()
+
+Etcd is yet another key-value store. However, unlike Redis the database is strongly consistent, making it a better choice for storing critical data of a distributed system. 
+
+In this article, we will deploy the database and play around with it using C# and .NET. Without further ado, let's get going! 
+
+## Recap
+
+Here's what we have done in the artice:
+
+- Deployed local instance of etcd.
+- Performed basic operations via C# code.
+- Implemented change listening via `WatchRequest`
+- Performed complex updates via `TxnRequest`.
+
+You can find the source code from the article [in this GitHub repository](https://github.com/astorDev/persic/blob/main/etcd/dotnet/playground/JumpStart.cs). Don't hesitate to give the repository a star ⭐! Don't hesite to clap for this article either! 😉
