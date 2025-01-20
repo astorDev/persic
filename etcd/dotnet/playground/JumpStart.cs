@@ -1,7 +1,7 @@
 ﻿using dotnet_etcd;
+using Grpc.Core;
 using Etcdserverpb;
 using Google.Protobuf;
-using Grpc.Core;
 
 namespace Playground.Etcd;
 
@@ -40,6 +40,8 @@ public sealed class JumpStart
 
         await etcdClient.PutAsync("dog", "sits");
         await etcdClient.PutAsync("dog", "runs");
+
+        await Task.Delay(100);
     }
     
     [TestMethod]

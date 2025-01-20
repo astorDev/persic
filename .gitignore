@@ -4,3 +4,4 @@ inbox.md
 TestResults/
 bin/
 obj/
+*.user
