@@ -8,25 +8,28 @@ public sealed class ChangeListening
     [TestMethod]
     public async Task Basic()
     {
-        var collection = this.GetCollection();
-        
-        await collection.Put(new(Guid.NewGuid().ToString(), 11));
+        var collection = this.GetCollectionWithReplicaSet();
         
         _ = collection.RunWatching((c) =>
         {
             Console.WriteLine($"{c.OperationType} -> {c.FullDocument}");
         });
-
-        await Task.Delay(1000);
+        
         await collection.Put(new(Guid.NewGuid().ToString(), 29));
         await collection.Put(new(Guid.NewGuid().ToString(), 27));
-        await Task.Delay(1000);
+        await Task.Delay(100);
     }
     
-
+    public IMongoCollection<Person> GetCollectionWithReplicaSet()
+    {
+        var client = new MongoClient("mongodb://localhost:27017/?replicaSet=rs0");
+        var database = client.GetDatabase("persic-playground");
+        return database.GetCollection<Person>("people");
+    }
+    
     public IMongoCollection<Person> GetCollection()
     {
-        var client = new MongoClient("mongodb://localhost:27017/?replicaSet=rs0&connectTimeoutMS=1000&serverSelectionTimeoutMS=1000");
+        var client = new MongoClient("mongodb://localhost:27017");
         var database = client.GetDatabase("persic-playground");
         return database.GetCollection<Person>("people");
     }
