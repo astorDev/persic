@@ -10,7 +10,7 @@ In this article, we will deploy and play around with the database using C# and .
 
 ## Deploying Etcd Locally via Docker
 
-First of all, we'll need to actually have a `etcd` instance to connect to. Gladly, deploying it via docker is pretty trivial. We'll just need to allow connecting to the instance without any authentication, map storage folder to a persistent volumes and map the default `2379` port. Here's how our `compose.yml` file will look like:
+First of all, we'll need to actually have an `etcd` instance to connect to. Gladly, deploying it via docker is pretty trivial. We'll just need to allow connecting to the instance without any authentication, map the storage folder to a persistent volume, and map the default `2379` port. Here's what our `compose.yml` file will look like:
 
 ```yaml
 services:
@@ -35,7 +35,7 @@ docker compose up -d
 
 We are ready to go! Now let's jump to the C# code.
 
-## Performing Basic Key Value Operations
+## Performing Basic Key-Value Operations
 
 First thing first, we'll need to add a package, providing us with a client for our database. Here's the command that does just that:
 
@@ -78,9 +78,9 @@ This is practically everything we need to know about etcd fundamentals. Now, let
 
 ## Listening for Changes using Etcd `WatchRequest`
 
-What make `etcd` stand apart is it's ability to watch changes for a particular key or a set of keys. We can do it by using `WatchAsync` method of our `EtcdClient`. 
+What makes `etcd` stand apart is its ability to watch changes for a particular key or a set of keys. We can do it by using the `WatchAsync` method of our `EtcdClient`. 
 
-The `Task` returned by the method seems to run indefinately (for the duration of the watching). So we won't `await` it, but instead just write it to a discard (`_`). On receiving a change we'll print the information in the console, along with the details of the events. Finally, to make time for the event to occur and be logged we'll `Delay` our thread just for a 100 milliseconds. Here's the code:
+The `Task` returned by the method seems to run indefinitely (for the duration of the watching). So we won't `await` it, but instead just write it to a discard (`_`). On receiving a change we'll print the information in the console, along with the details of the events. Finally, to make time for the event to occur and be logged we'll `Delay` our thread just for 100 milliseconds. Here's the code:
 
 ```csharp
 using Etcdserverpb;
@@ -116,11 +116,11 @@ received watch response
 Received event: dog -> runs. (Put)
 ```
 
-Apperently, subscription for events also triggers the watch callback with an empty `WatchEvent` array. That's why we have two `received watch response` messages in the beginning. The change listening mechanics of the `etcd` are cool, yet this is not all. Let's do just one more advanced thing!
+Apparently, a subscription for events also triggers the watch callback with an empty `WatchEvent` array. That's why we have two `received watch response` messages in the beginning. The change-listening mechanics of the `etcd` are cool, yet this is not all. Let's do just one more advanced thing!
 
 ## Atomic Write using Etcd `TxnRequest`
 
-Etcd also allows us to atomically write multiple keys, using transactions mechanism. This time we'll need a slightly more verbose syntax to achieve our goal, but it's still pretty easy to comprehend. Here's how we can write two animal sounds in a single Transaction:
+Etcd also allows us to atomically write multiple keys, using a transactions mechanism. This time we'll need a slightly more verbose syntax to achieve our goal, but it's still pretty easy to comprehend. Here's how we can write two animal sounds in a single Transaction:
 
 ```csharp
 using Google.Protobuf;
@@ -156,7 +156,7 @@ Console.WriteLine($"cow = {cow}");
 Console.WriteLine($"chicken = {chicken}");
 ```
 
-This time, instead of just running our code, let's do something more fun! How about combining the transactions approach with change listening.
+This time, instead of just running our code, let's do something more fun! How about combining the transactions approach with change listening?
 
 Let's listen to all changes in the animals "folder". etcd treats keys as byte sequences and compares them lexicographically. That means that in order to get all `animals/` we'll have to specify a range starting from `animals/` and ending right after it (at `animals0`, where `0` is the next character after `/` ). Here's the listener code:
 
