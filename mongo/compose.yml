@@ -1,21 +1,8 @@
 services:
   mongo1:
     image: mongo
-    restart: always
-    command: mongod --replSet my-mongo-set
     ports:
-      - 27017:27017 
-
-  mongoinit:
-    image: mongo:latest
-    depends_on:
-      - mongo1
-    command: >
-      bash -c "
-      sleep 5 &&
-      mongosh --host mongo1:27017 --eval '
-        rs.reconfig({
-          _id: \"my-mongo-set\",
-          members: [{ _id: 0, host: \"localhost:27017\" }]
-        });
-      '"
+      - 27017:27017
+    command: mongod --replSet rs0
+    volumes:
+      - ./init.js:/docker-entrypoint-initdb.d/init.js
