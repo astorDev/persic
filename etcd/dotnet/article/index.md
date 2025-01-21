@@ -2,7 +2,7 @@
 
 > Using etcd key-value store in C#: writing, reading key-value pairs, listening for changes, and executing a transaction.
 
-![Yet another Key-Value store with C#]()
+![Yet another Key-Value store with C#](thumb.png)
 
 Etcd is yet another key-value store. However, unlike Redis the database is strongly consistent, making it a better choice for storing critical data of a distributed system. 
 
