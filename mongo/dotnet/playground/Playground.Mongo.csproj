@@ -17,4 +17,8 @@
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\lib\Persic.Mongo.csproj" />
+  </ItemGroup>
+
 </Project>
