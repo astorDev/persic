@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Persic;
 
@@ -12,6 +13,11 @@ public static class MongoOperationsExtensions
             document,
             options: new ReplaceOptions() { IsUpsert = true }
         );
+    }
+
+    public static async Task<BsonDocument> Ping(this IMongoDatabase database)
+    {
+        return await database.RunCommandAsync<BsonDocument>(new BsonDocument("ping", 1));
     }
 }
 
