@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using Persic;
 
 namespace Playground.Mongo;
 
@@ -20,36 +21,25 @@ public sealed class ChangeListening
         await Task.Delay(100);
     }
     
-    public IMongoCollection<Person> GetCollectionWithReplicaSet()
+    public IMongoCollection<Robot> GetCollectionWithReplicaSet()
     {
         var client = new MongoClient("mongodb://localhost:27017/?replicaSet=rs0");
         var database = client.GetDatabase("persic-playground");
-        return database.GetCollection<Person>("people");
+        return database.GetCollection<Robot>("people");
     }
     
-    public IMongoCollection<Person> GetCollection()
+    public IMongoCollection<Robot> GetCollection()
     {
         var client = new MongoClient("mongodb://localhost:27017");
         var database = client.GetDatabase("persic-playground");
-        return database.GetCollection<Person>("people");
+        return database.GetCollection<Robot>("people");
     }
 }
 
-public record Person(string Id, int Age) : MongoRecord(Id);
-
-public record MongoRecord(string Id);
+public record Robot(string Id, int Type) : IMongoRecord<string>;
 
 public static class MongoCollectionExtensions
 {
-    public static async Task<ReplaceOneResult> Put<TDocument>(this IMongoCollection<TDocument> collection, TDocument document) where TDocument : MongoRecord
-    {
-        return await collection.ReplaceOneAsync(
-            (x) => x.Id == document.Id,
-            document,
-            options: new ReplaceOptions() { IsUpsert = true }
-        );
-    }
-    
     public static async Task RunWatching<TDocument>(
         this IMongoCollection<TDocument> collection, 
         Action<ChangeStreamDocument<TDocument>> changeHandler)
@@ -69,6 +59,5 @@ public static class MongoCollectionExtensions
         {
             Console.WriteLine(ex);
         }
-        
     }
 }
