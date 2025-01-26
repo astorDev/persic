@@ -9,8 +9,8 @@ public sealed class ChangeListening
     [TestMethod]
     public async Task Connecting()
     {
-        var collection = GetCollection();
-        var pong = await collection.Database.Ping();
+        var database = GetDatabase();
+        var pong = await database.Ping();
         Console.WriteLine(pong);
     }
 
@@ -18,14 +18,14 @@ public sealed class ChangeListening
     [ExpectedException(typeof(MongoCommandException))]
     public async Task Naive()
     {
-        var collection = this.GetCollection();
+        var collection = GetDatabase().GetCollection<Robot>("robots");
         await ExecuteWatching(collection);
     }
 
     [TestMethod]
     public async Task Valid()
     {
-        var collection = this.GetCollectionWithReplicaSet();
+        var collection = GetDatabaseWithReplicaSet().GetCollection<Robot>("robots");
         await ExecuteWatching(collection);
     }
 
@@ -43,18 +43,16 @@ public sealed class ChangeListening
         await Task.Delay(100);
     }
     
-    public IMongoCollection<Robot> GetCollectionWithReplicaSet()
+    public IMongoDatabase GetDatabaseWithReplicaSet()
     {
-        var client = new MongoClient("mongodb://localhost:27017/?replicaSet=rs0&serverSelectionTimeoutMS=2000");
-        var database = client.GetDatabase("persic-playground");
-        return database.GetCollection<Robot>("robots");
+        var client = new MongoClient("mongodb://localhost:27017/?replicaSet=rs0");
+        return client.GetDatabase("persic-playground");
     }
     
-    public IMongoCollection<Robot> GetCollection()
+    public IMongoDatabase GetDatabase()
     {
         var client = new MongoClient("mongodb://localhost:27019/");
-        var database = client.GetDatabase("persic-playground");
-        return database.GetCollection<Robot>("robots");
+        return client.GetDatabase("persic-playground");
     }
 }
 
