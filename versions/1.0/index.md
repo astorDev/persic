@@ -1,0 +1,3 @@
+- `Persic.Mongo` initial release
+    - [ ] `Put` and `Ping` extension methods
+    - [ ] `ServiceCollection.AddMongo` extension method
