@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using Persic;
 
 namespace Playground.Mongo;
