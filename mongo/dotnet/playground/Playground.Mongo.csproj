@@ -11,14 +11,11 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="MongoDB.Driver" Version="3.1.0" />
     <PackageReference Include="MSTest" Version="3.6.1" />
+    <PackageReference Include="Persic.Mongo" Version="2025.101.127.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\lib\Persic.Mongo.csproj" />
   </ItemGroup>
 
 </Project>
