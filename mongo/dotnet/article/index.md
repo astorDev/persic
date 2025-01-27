@@ -24,13 +24,11 @@ services:
 dotnet add package MongoDB.Driver
 ```
 
-
 ```csharp
-public IMongoCollection<Robot> GetCollection()
+public IMongoDatabase GetDatabase()
 {
     var client = new MongoClient("mongodb://localhost:27019/");
-    var database = client.GetDatabase("persic-playground");
-    return database.GetCollection<Robot>("robots");
+    return client.GetDatabase("persic-playground");
 }
 ```
 
