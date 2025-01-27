@@ -8,7 +8,7 @@ MongoDB is becoming an increasingly popular database option in modern systems, i
 
 ## Deploying and Connection to MongoDB via C#: Naive Version
 
-First thing first, let's setup our environment. At the start, We'll need to deploy mongo locally. Here's `compose.yml` that does just that:
+First thing first, let's set up our environment. At the start, We'll need to deploy Mongo locally. Here's `compose.yml` that does just that:
 
 ```yml
 services:
@@ -36,7 +36,7 @@ public IMongoDatabase GetDatabase()
 }
 ```
 
-To test the connection we'll use a ping command. Although the command is built-in MongoDB there's no easy way to call it using the official driver. Gladly, there's a library that provides a `Ping` extension method along with other useful MongoDB utils. Let's install it:
+To test the connection we'll use a ping command. Although the command is built in MongoDB there's no easy way to call it using the official driver. Gladly, there's a library that provides a `Ping` extension method along with other useful MongoDB utils. Let's install it:
 
 ```sh
 dotnet add package Persic.Mongo
@@ -60,7 +60,7 @@ The setup is done! Let's move to the interesting part
 
 ## Implementing Change Listening
 
-By running `WatchAsync` on a mongo collection we can get an `IChangeStreamCursor`. Iterating the cursor via `MoveNextAsync` we should be able to rotate our `ChangeStream.Current` to a newly updated event. Let's assemble this into a single method, accepting `Action<ChangeStreamDocument<TDocument>>` for a change handler. Here's how our code might look like:
+By running `WatchAsync` on a Mongo collection we can get an `IChangeStreamCursor`. Iterating the cursor via `MoveNextAsync` we should be able to rotate our `ChangeStream.Current` to a newly updated event. Let's assemble this into a single method, accepting `Action<ChangeStreamDocument<TDocument>>` for a change handler. Here's what our code might look like:
 
 ```csharp
 public static class MongoCollectionExtensions
@@ -81,9 +81,9 @@ public static class MongoCollectionExtensions
 }
 ```
 
-To propertly work with a mongo collection we'll need to have an underlying model type. Let's define a simple `Robot` class, just to use something specific
+To properly work with a Mongo collection we'll need to have an underlying model type. Let's define a simple `Robot` class, just to use something specific
 
-> We will also implement `IMongoRecord<string>` from the `Persic.Mongo` library. That will allow us to use `Put` method from the library
+> We will also implement `IMongoRecord<string>` from the `Persic.Mongo` library. That will allow us to use the `Put` method from the library
 
 ```csharp
 public record Robot(string Id, int Type) : IMongoRecord<string>;
@@ -101,13 +101,13 @@ await collection.Put(new(Guid.NewGuid().ToString(), 29));
 await collection.Put(new(Guid.NewGuid().ToString(), 27));
 ```
 
-But now we won't notice if an exception will happen during the watching process. Let's fix it, by checking if our `watchTask` completed (failed). If it did we will let it throw the exception by awaiting it. Here's the code:
+But now we won't notice if an exception will happen during the watching process. Let's fix it, by checking if our `watchTask` is completed (failed). If it did we will let it throw the exception by awaiting it. Here's the code:
 
 ```csharp
 if (watchTask.IsCompleted) await watchTask;
 ```
 
-We also may need some time before the `ChangeStream` figures out that something has happened. Let's give it at least one tenth of a second to do so. Like this:
+We also may need some time before the `ChangeStream` figures out that something has happened. Let's give it at least one-tenth of a second to do so. Like this:
 
 ```csharp
 await Task.Delay(100);
@@ -131,26 +131,26 @@ public async Task ExecuteWatching(IMongoCollection<Robot> collection)
 }
 ```
 
-And finally let's assemble our parts together. Our first attempt code should look something like this:
+And finally, let's assemble our parts together. Our first attempt code should look something like this:
 
 ```csharp
 var collection = GetDatabase().GetCollection<Robot>("robots");
 await ExecuteWatching(collection);
 ```
 
-Unfortunatelly, running this code will give us a error like this:
+Unfortunately, running this code will give us an error like this:
 
 ```text
 Command aggregate failed: The $changeStream stage is only supported on replica sets.
 ```
 
-Well, this is harder that we might have expected. However, it's pretty clear what we'll need to do. We'll need to enable replica sets!
+Well, this is harder than we might have expected. However, it's clear what we'll need to do. We'll need to enable replica sets!
 
-## Deploying MongoDB with replica set via Docker Compose
+## Deploying MongoDB with a replica set via Docker Compose
 
-Unfortunately, deploying mongo with replica set is not that trivial either. The main problem is the fact that we have to run a script inside a mongo shell to initiate it, which is not something trivial to do in docker. 
+Unfortunately, deploying Mongo with a replica set is not that trivial either. The main problem is the fact that we have to run a script inside a Mongo shell to initiate it, which is not something trivial to do in Docker. 
 
-Gladly, mongo containers seem to automatically run script inside `docker-entrypoint-initdb.d` folder, which is exactly what we are looking for. Let's define such script it a file called `init.js` in the same folder as our compose file.
+Gladly, mongo containers seem to automatically run the script inside the `docker-entrypoint-initdb.d` folder, which is exactly what we are looking for. Let's define such a script it a file called `init.js` in the same folder as our compose file.
 
 ```js
 rs.initiate({
@@ -161,12 +161,12 @@ rs.initiate({
 });
 ```
 
-Now, let's create a mongo instance with replica set enable. We'll need to do two things to achieve that:
+Now, let's create a mongo instance with a replica set enabled. We'll need to do two things to achieve that:
 
 1. Set command to run with `--replSet` flag
-2. Supply our `init.js` to the containers strartup scripts.
+2. Supply our `init.js` to the containers' startup scripts.
 
-Here's how the docker compose might look like:
+Here's what the docker compose might look like:
 
 ```yaml
 services:
@@ -181,11 +181,11 @@ services:
       - ./init.js:/docker-entrypoint-initdb.d/init.js
 ```
 
-After deploying the instance via `docker compose up -d` we should get a MongoDB with replica set running on port `27017` on our local machine. Let's use it now
+After deploying the instance via `docker compose up -d` we should get a MongoDB with a replica set running on port `27017` on our local machine. Let's use it now
 
 ## Connecting to Mongo with replicaSet specification.
 
-To use replica set we also need to specify it explicitly in our connection string. Let's create a new method for connecting to our database:
+To use a replica set we also need to specify it explicitly in our connection string. Let's create a new method for connecting to our database:
 
 ```csharp
 public IMongoDatabase GetDatabaseWithReplicaSet()
@@ -202,7 +202,7 @@ var collection = GetDatabaseWithReplicaSet().GetCollection<Robot>("robots");
 await ExecuteWatching(collection);
 ```
 
-Now, by running it we should get output from the function we supplied into our `RunWatching` method. Let me remind you the code we've used:
+Now, by running it we should get output from the function we supplied into our `RunWatching` method. Let me remind you of the code we've used:
 
 ```csharp
 var watchTask = collection.RunWatching((c) =>
