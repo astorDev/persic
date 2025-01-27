@@ -2,7 +2,7 @@
 
 > Reacting to MongoDB collection changes in .NET by using `WatchAsync` and `IChangeStreamCursor`. Plus, deploying MongoDB instance with replica set enabled locally via docker-compose.
 
-![Listening to Mongo using .NET. Not Long-Polling]()
+![Listening to Mongo using .NET. Not Long-Polling](thumb.png)
 
 MongoDB is becoming an increasingly popular database option in modern systems, including those written in .NET. However, one of its advanced features - change listening, is frequently overlooked. In this article I'll shed light on that functionality, providing a ready-to-go example of listening to changes in a MongoDB collection using C#.
 
