@@ -29,6 +29,13 @@ public sealed class ChangeListening
         await ExecuteWatching(collection);
     }
 
+    [TestMethod]
+    public async Task Imaged()
+    {
+        var collection = GetImagedDatabase().GetCollection<Robot>("robots");
+        await ExecuteWatching(collection);
+    }
+
     public async Task ExecuteWatching(IMongoCollection<Robot> collection)
     {
         var watchTask = collection.RunWatching((c) =>
@@ -52,6 +59,12 @@ public sealed class ChangeListening
     public IMongoDatabase GetDatabase()
     {
         var client = new MongoClient("mongodb://localhost:27019/");
+        return client.GetDatabase("persic-playground");
+    }
+
+    public IMongoDatabase GetImagedDatabase()
+    {
+        var client = new MongoClient("mongodb://localhost:27018/?replicaSet=rs0");
         return client.GetDatabase("persic-playground");
     }
 }
