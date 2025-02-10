@@ -11,3 +11,9 @@ services:
     command: mongod --replSet rs0
     volumes:
       - ./init.js:/docker-entrypoint-initdb.d/init.js
+
+  imaged:
+    image: vosarat/mongo-rs0:latest
+    build: .
+    ports:
+      - 27018:27017
