@@ -1,9 +1,13 @@
 ensureInitialized();
 
 function ensureInitialized() {
-    if (rs.status().ok === 1) {
-        print("Replica set already initialized");
+    try {
+        const status = rs.status();
+        print("Replica set status: ", status);
         return;
+    }
+    catch (e) {
+        print("Replica set not initialized");
     }
 
     print("Initializing replica set");
