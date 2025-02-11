@@ -16,4 +16,19 @@ services:
     image: vosarat/mongo-rs0:latest
     build: .
     ports:
-      - 27018:27017
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+
+  persisted:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+
+volumes:
+  mongo-data:
+  mongo-config:
