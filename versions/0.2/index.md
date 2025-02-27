@@ -1,0 +1,3 @@
+- [x] Json Extensions.
+- [ ] Registration Descriptive Exception. [Issue](https://github.com/astorDev/persic/issues/20)
+- [ ] `Search`. [Issue](https://github.com/astorDev/persic/issues/19)
