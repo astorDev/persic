@@ -8,6 +8,9 @@ public static class Json
     public static async Task<JsonDocument> ToJsonDocument(this Task<BsonDocument> bsonTask) => 
         (await bsonTask).ToJsonDocument();
 
+    public static async Task<JsonElement> ToJsonElement(this Task<BsonDocument> bsonTask) => 
+        (await bsonTask).ToJsonElement();
+
     public static JsonDocument ToJsonDocument(this BsonDocument bson) => 
         JsonDocument.Parse(bson.ToJson());
 
