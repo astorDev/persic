@@ -1,3 +1,5 @@
-- [x] Json Extensions.
-- [ ] Registration Descriptive Exception. [Issue](https://github.com/astorDev/persic/issues/20)
-- [ ] `Search`. [Issue](https://github.com/astorDev/persic/issues/19)
+- [ ] `Persic.Mongo` <VERSION>
+    - [x] Json Extensions.
+    - [ ] `Search`. [Issue](https://github.com/astorDev/persic/issues/19)
+- [ ] `Persic.EF` <VERSION>
+    - [ ] `Put` method
