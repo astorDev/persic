@@ -1,0 +1,17 @@
+name: Persic.EF NuGet
+on:
+  push:
+    paths:
+      - 'ef/lib/**'
+      - '.github/workflows/ef-nuget.yaml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Pack & Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/nuget@main
+        with:
+          project: ef/lib/Persic.EF
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
