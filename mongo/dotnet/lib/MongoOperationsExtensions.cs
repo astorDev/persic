@@ -15,6 +15,12 @@ public static class MongoOperationsExtensions
         );
     }
 
+    public static async Task<TMongoRecord?> Search<TMongoRecord>(this IMongoCollection<TMongoRecord> collection, string id)
+        where TMongoRecord : IMongoRecord<string>
+    {
+        return await collection.Find(r => r.Id == id).FirstOrDefaultAsync();
+    }
+
     public static async Task<BsonDocument> Ping(this IMongoDatabase database)
     {
         return await database.RunCommandAsync<BsonDocument>(new BsonDocument("ping", 1));
