@@ -1,5 +1,5 @@
-- [ ] `Persic.Mongo` <VERSION>
+- [x] `Persic.Mongo` 2025.103.113.6
     - [x] Json Extensions.
-    - [ ] `Search`. [Issue](https://github.com/astorDev/persic/issues/19)
-- [ ] `Persic.EF` <VERSION>
-    - [ ] `Put` method
+    - [x] `Search`. [Issue](https://github.com/astorDev/persic/issues/19)
+- [x] `Persic.EF` 2025.103.113.3
+    - [x] `Put` method
