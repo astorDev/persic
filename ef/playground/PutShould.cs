@@ -58,6 +58,38 @@ public sealed class PutShould
         storedEntity.Name.ShouldBe("State Two");
         storedEntity.Status.ShouldBe("Processed");
     }
+
+    [TestMethod]
+    public async Task WorkWithoutInterface()
+    {
+        var context = Given.Empty<PlaygroundContext>();
+
+        var entity = new UninterfacedEntity { 
+            Id = "86f4b4dc-3e26-4367-904f-7773291739c0",
+            Name = "State One",
+            Status = "Pending"
+        };
+
+        await context.UninterfacedEntities.Put(entity, e => e.Id == entity.Id);
+        context.SaveChanges();
+
+        context = new PlaygroundContext();
+        var updatedEntity = new UninterfacedEntity { 
+            Id = "86f4b4dc-3e26-4367-904f-7773291739c0",
+            Name = "State Two",
+            Status = "Processed"
+        };
+
+        await context.UninterfacedEntities.Put(updatedEntity, e => e.Id == updatedEntity.Id);
+        context.SaveChanges();
+
+        context = new PlaygroundContext();
+        var storedEntity = context.UninterfacedEntities.Find(entity.Id);
+
+        storedEntity.ShouldNotBeNull();
+        storedEntity.Name.ShouldBe("State Two");
+        storedEntity.Status.ShouldBe("Processed");
+    }
 }
 
 public static class Given
@@ -74,6 +106,7 @@ public static class Given
 public class PlaygroundContext : DbContext
 {
     public DbSet<PlaygroundEntity> Entities { get; set; } = null!;
+    public DbSet<UninterfacedEntity> UninterfacedEntities { get; set; } = null!;
 
     public static PlaygroundContext Fresh()
     {
@@ -94,7 +127,14 @@ public class PlaygroundContext : DbContext
 
 public class PlaygroundEntity : IDbEntity<string>
 {
-    public string Id { get; set; }
-    public string Name { get; set; }
+    public required string Id { get; set; }
+    public required string Name { get; set; }
+    public string? Status { get; set; }
+}
+
+public class UninterfacedEntity
+{
+    public required string Id { get; set; }
+    public required string Name { get; set; }
     public string? Status { get; set; }
 }
