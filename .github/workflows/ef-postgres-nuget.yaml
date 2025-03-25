@@ -1,0 +1,17 @@
+name: Persic.EF.Postgres NuGet
+on:
+  push:
+    paths:
+      - 'ef/postgres/lib/**'
+      - '.github/workflows/ef-postgres-nuget.yaml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Pack & Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/nuget@main
+        with:
+          project: ef/postgres/lib/Persic.EF.Postgres
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
