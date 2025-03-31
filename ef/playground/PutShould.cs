@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Shouldly;
+﻿using Shouldly;
 
 namespace Persic.EF.Playground;
 
@@ -90,51 +88,4 @@ public sealed class PutShould
         storedEntity.Name.ShouldBe("State Two");
         storedEntity.Status.ShouldBe("Processed");
     }
-}
-
-public static class Given
-{
-    public static TContext Empty<TContext>() where TContext : DbContext, new()
-    {
-        var context = new TContext();
-        context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
-        return context;
-    }
-}
-
-public class PlaygroundContext : DbContext
-{
-    public DbSet<PlaygroundEntity> Entities { get; set; } = null!;
-    public DbSet<UninterfacedEntity> UninterfacedEntities { get; set; } = null!;
-
-    public static PlaygroundContext Fresh()
-    {
-        var context = new PlaygroundContext();
-        context.Database.EnsureDeleted();
-        context.Database.EnsureCreated();
-        return context;
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql("Host=localhost;Database=playground;Username=postgres;Password=postgres")
-            .UseSnakeCaseNamingConvention()
-            .EnableSensitiveDataLogging()
-            .LogTo(Console.WriteLine, LogLevel.Information);
-    }
-}
-
-public class PlaygroundEntity : IDbEntity<string>
-{
-    public required string Id { get; set; }
-    public required string Name { get; set; }
-    public string? Status { get; set; }
-}
-
-public class UninterfacedEntity
-{
-    public required string Id { get; set; }
-    public required string Name { get; set; }
-    public string? Status { get; set; }
 }

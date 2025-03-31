@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persic.EF;
+namespace Persic;
 
 public static class DbSetExtensions
 {
