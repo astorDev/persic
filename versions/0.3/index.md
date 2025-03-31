@@ -2,7 +2,8 @@
     - [ ] Improved Registration
         - [ ] `AddMongo(string DatabaseConfigPath = "ConnectionStrings:Mongo")`
         - [ ] Descriptive Exception for Collection Registration. [Issue](https://github.com/astorDev/persic/issues/20)
-- [ ] `Persic.EF` <VERSION>
-    - [ ] `Search` on `IQueryable`
+- [x] `Persic.EF` 2025.103.131.6
+    - [x] `Search` on `IQueryable`
+    - [x] `Migrate` on `IServiceProvider`
 - [ ] `Persic.EF.Postgres` <VERSION>
     - [ ] `IServiceCollection.AddPostgres` extension
