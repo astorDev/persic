@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\lib\Persic.EF.csproj" />
+    <ProjectReference Include="..\..\lib\Persic.EF.csproj" />
   </ItemGroup>
 
 </Project>
