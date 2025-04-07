@@ -1,3 +1,5 @@
+- [ ] `Persic.EF` <VERSION>
+    - [ ] `Put` `Func<T, T, T> updateOverwrite`
 - [ ] `Persic.Mongo` <VERSION>
     - [ ] Improved Registration
         - [ ] `AddMongo(string DatabaseConfigPath = "ConnectionStrings:Mongo")`

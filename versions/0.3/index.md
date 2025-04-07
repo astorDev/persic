@@ -2,5 +2,5 @@
     - [x] `Search` on `IQueryable`
     - [x] `Migrate` on `IServiceProvider`
     - [ ] `EnsureRecreated` on `IServiceProvider`
-- [x] `Persic.EF.Postgres` <VERSION>
+- [x] `Persic.EF.Postgres` 2025.104.105.8
     - [x] `IServiceCollection.AddPostgres` extension
