@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres
     environment:
-      POSTGRES_DB: exampledb
+      POSTGRES_DB: playground
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
