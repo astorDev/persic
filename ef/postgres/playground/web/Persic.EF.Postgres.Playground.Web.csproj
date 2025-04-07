@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Persic.EF.Postgres" Version="2025.103.126.2" />
+  </ItemGroup>
+
 </Project>
