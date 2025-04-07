@@ -88,4 +88,35 @@ public sealed class PutShould
         storedEntity.Name.ShouldBe("State Two");
         storedEntity.Status.ShouldBe("Processed");
     }
+
+    [TestMethod]
+    public async Task UseUpdateOverwrite()
+    {
+        var context = Given.Empty<PlaygroundContext>();
+
+        var entity = new PlaygroundEntity { 
+            Id = "86f4b4dc-3e26-4367-904f-7773291739c0",
+            Name = "+"
+        };
+
+        await context.Entities.Put(entity);
+        context.SaveChanges();
+
+        context = new PlaygroundContext();
+        var updatedEntity = new PlaygroundEntity { 
+            Id = "86f4b4dc-3e26-4367-904f-7773291739c0",
+            Name = "+"
+        };
+
+        await context.Entities.Put(updatedEntity, (oldEntity, newEntity) => {
+            newEntity.Name = oldEntity.Name + newEntity.Name;
+        });
+        context.SaveChanges();
+
+        context = new PlaygroundContext();
+        var storedEntity = context.Entities.Find(entity.Id);
+
+        storedEntity.ShouldNotBeNull();
+        storedEntity.Name.ShouldBe("++");
+    }
 }
