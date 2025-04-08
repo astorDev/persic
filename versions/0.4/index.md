@@ -1,5 +1,8 @@
 - [ ] `Persic.EF` <VERSION>
     - [ ] `Put` `Func<T, T, T> updateOverwrite`
+- [ ] `Persic.EF.Postgres` <VERSION>
+    - [x] Overload allowing additional options override
+    - [ ] Fresh version of `Persic.EF` (There's no dependency as of now - is it needed?)
 - [ ] `Persic.Mongo` <VERSION>
     - [ ] Improved Registration
         - [ ] `AddMongo(string DatabaseConfigPath = "ConnectionStrings:Mongo")`
