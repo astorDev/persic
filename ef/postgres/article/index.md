@@ -58,7 +58,7 @@ builder.Services.AddDbContext<Db>((sp, options) =>
 });
 ```
 
-Finally, let's test our setup, by logging a connection result. Here's a code that does just that:
+Finally, let's test our setup by logging a connection result. Here's a code that does just that:
 
 ```csharp
 await using var scope = app.Services.CreateAsyncScope();
