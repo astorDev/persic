@@ -201,11 +201,22 @@ And here's how `launchSettings.json` should look in assemblance:
 }
 ```
 
-Now, by executing `dontet run` we should get exactly the same result as before.
+Now, by executing `dontet run` we should get exactly the same result as before. The code is fine now, but how about we make an extension method, to make registration of our postgres db even smoother. Let's start by moving configuration resolution to a more flexible approach, avoiding dependency on `WebApplicationBuilder`. 
+
+Since our connection string is most likely required we'll need a `IConfiguration.GetRequiredValue` method. Gladly, there's a package that provides such a method:
 
 ```sh
 dotnet add package Confi
 ```
+
+Now, we will resolve our `IConfiguration` from DI container instead of relying on the `WebApplicationBuilder`. Here's the code:
+
+```csharp
+var config = sp.GetRequiredService<IConfiguration>();
+var connectionString = config.GetRequiredValue(configurationPath);
+```
+
+Using this approach we should be able to assemble
 
 ```csharp
 using Confi;
@@ -232,7 +243,9 @@ public static class ServiceCollectionExtensions
 }
 ```
 
-Feel free to experiment on your own. You can find the complete code for this article [here on GitHub](https://github.com/astorDev/persic/tree/main/ef/postgres/playground/web)
+Again, the results should be exactly the same as before, but with just a single simple line of code for registration. In the last section you will find a quick recap of the article, along with some bonus, making PostgreSQL integration even easier. 
+
+Also, Feel free to experiment on your own. You can find the complete code for this article [here on GitHub](https://github.com/astorDev/persic/tree/main/ef/postgres/playground/web).
 
 ## TLDR;
 
