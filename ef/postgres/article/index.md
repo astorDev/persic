@@ -94,6 +94,8 @@ Connecting to the database is all good, but how about we do some SQL? Let's move
 
 ## First Query: Scaffolding our Database and Making an Example Request
 
+To execute a proper SQL query we'll need a table. Let’s scaffold a simple one, unoriginally called `Records`:
+
 ```csharp
 public class Db(DbContextOptions<Db> options) : DbContext(options) {
     public DbSet<Record> Records { get; set; } = null!;
@@ -106,11 +108,18 @@ public class Record
 }
 ```
 
+For our experiments we'll need a fresh database with tables created on every start. Here's how we can do that:
+
+> A friendly reminder to not sure `EnsureDeleted` or `EnsureCreated` in a real application.
 
 ```csharp
 await db.Database.EnsureDeletedAsync();
 await db.Database.EnsureCreatedAsync();
+```
 
+With the schema in place, let’s do the most basic operations of adding and reading our records:
+
+```csharp
 db.Add(new Record { Name = "Test" });
 
 await db.SaveChangesAsync();
@@ -118,19 +127,24 @@ await db.SaveChangesAsync();
 var records = await db.Records.ToListAsync();
 ```
 
-```sql
-INSERT INTO "Records" ("Name") VALUES (@p0) RETURNING "Id";
-```
+Now, after executing `dotnet run` we should see the commands EF Core executed against our database:
 
 ```sql
+INSERT INTO "Records" ("Name") VALUES (@p0) RETURNING "Id";
 SELECT r."Id", r."Name" FROM "Records" AS r
 ```
 
+Making a query was pretty, wasn't it. However, the query looks pretty ugly, with the quotes around each table and column name. Let's fix it in the next section!
+
 ## Snake Case: Making EF Play Nicely with PostgreSQL
+
+PostgreSQL has rather hard preference for snake_case: If a column or table name is not snake case PostgreSQL won't even recognize it, unless it is wrapped in a quotes. EF Core, on the other side, uses PascalCase by default. Of course, that misalligment will bring some pain when working with the PostgreSQL queries. Let's fix this by using a naming convention package:
 
 ```sh
 dotnet add package EFCore.NamingConventions
 ```
+
+With the package installed, we can update our `DbContext` registration to apply the snake_case naming convention. This ensures that all table and column names are automatically converted:
 
 ```csharp
 builder.Services.AddDbContext<Db>((sp, options) =>
@@ -140,15 +154,18 @@ builder.Services.AddDbContext<Db>((sp, options) =>
 });
 ```
 
-```sql
-INSERT INTO records (name) VALUES (@p0) RETURNING id;
-```
+Here's how our queries will look after the change:
 
 ```sql
+INSERT INTO records (name) VALUES (@p0) RETURNING id;
 SELECT r.id, r.name FROM records AS r
 ```
 
+With our queries looking nicely it's time to address the next thing. If you are like me it should already start bothering you to see the connection string hard-coded. Let's fix this in the next section.
+
 ## Better Registration: Utilizing .NET Configuration System and Creating an Extension Method 
+
+Avoiding hard-coded connection string is pretty easy - we will read the value from the configuration instead:
 
 ```csharp
 builder.Services.AddDbContext<Db>((sp, options) =>
@@ -160,9 +177,13 @@ builder.Services.AddDbContext<Db>((sp, options) =>
 });
 ```
 
+Obviously, we will also need to set the value. Our code shouldn't change in a bit, regardless of the configuration source used, but as I exaplained In [this article](https://medium.com/@vosarat1995/net-configuration-architecture-getting-started-87526b9fbc68), my configuration source for such values is `launchSettings.json`, so here's the line we'll need to add:
+
 ```json
 "ConnectionStrings:Postgres" : "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=playground"
 ```
+
+And here's how `launchSettings.json` should look in assemblance:
 
 ```json
 {
@@ -180,7 +201,7 @@ builder.Services.AddDbContext<Db>((sp, options) =>
 }
 ```
 
-`dontet run`
+Now, by executing `dontet run` we should get exactly the same result as before.
 
 ```sh
 dotnet add package Confi
