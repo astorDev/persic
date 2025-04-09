@@ -127,18 +127,18 @@ await db.SaveChangesAsync();
 var records = await db.Records.ToListAsync();
 ```
 
-Now, after executing `dotnet run` we should see the commands EF Core executed against our database:
+Now, after executing `dotnet run`, we should see the commands EF Core executed against our database:
 
 ```sql
 INSERT INTO "Records" ("Name") VALUES (@p0) RETURNING "Id";
 SELECT r."Id", r."Name" FROM "Records" AS r
 ```
 
-Making a query was pretty, wasn't it. However, the query looks pretty ugly, with the quotes around each table and column name. Let's fix it in the next section!
+Making a query was pretty, wasn't it? However, the query looks pretty ugly, with the quotes around each table and column name. Let's fix it in the next section!
 
 ## Snake Case: Making EF Play Nicely with PostgreSQL
 
-PostgreSQL has rather hard preference for snake_case: If a column or table name is not snake case PostgreSQL won't even recognize it, unless it is wrapped in a quotes. EF Core, on the other side, uses PascalCase by default. Of course, that misalligment will bring some pain when working with the PostgreSQL queries. Let's fix this by using a naming convention package:
+PostgreSQL has a rather hard preference for snake_case: If a column or table name is not snake case, PostgreSQL won't even recognize it, unless it is wrapped in quotes. EF Core, on the other hand, uses PascalCase by default. Of course, that misalignment will bring some pain when working with the PostgreSQL queries. Let's fix this by using a naming convention package:
 
 ```sh
 dotnet add package EFCore.NamingConventions
@@ -161,7 +161,7 @@ INSERT INTO records (name) VALUES (@p0) RETURNING id;
 SELECT r.id, r.name FROM records AS r
 ```
 
-With our queries looking nicely it's time to address the next thing. If you are like me it should already start bothering you to see the connection string hard-coded. Let's fix this in the next section.
+With our queries looking nice, it's time to address the next thing. If you are like me, it should already start bothering you to see the connection string hard-coded. Let's fix this in the next section.
 
 ## Better Registration: Utilizing .NET Configuration System and Creating an Extension Method 
 
