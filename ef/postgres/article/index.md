@@ -8,7 +8,7 @@ PostgreSQL is the most popular database out there, according to the [latest Stac
 
 ## Setting Up the Project: Postgres Deployment with Docker Compose & Initial Raw Connection
 
-`compose.yml`
+To start, let's set up a local instance of PostgreSQL. Here's a simple `compose.yml` that does just that:
 
 ```yaml
 services:
@@ -22,11 +22,13 @@ services:
       - 5432:5432
 ```
 
-`docker compose up -d`
+After we've executed `docker compose up -d` and have our database up and running, let's scaffold our playground project. We'll use the most basic Minimal API template:
 
 ```sh
 dotnet new web
 ```
+
+Let's also make our logging a little bit nicer and remove `app.Run()` call since we don't actually need a running host:
 
 ```csharp
 builder.Logging.AddSimpleConsole(c => c.SingleLine = true); // added
@@ -34,14 +36,20 @@ builder.Logging.AddSimpleConsole(c => c.SingleLine = true); // added
 // removed -> app.Run()
 ```
 
+Most importantly, let's connect to the database. For now, we'll only need one package - PostgreSQL Provider for Entity Framework Core:
+
 ```sh
 dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
 ```
+
+With the package, we should be able to connect to the database we've deployed earlier. But first, we'll need a `DbContext` - let's declare an empty one:
 
 ```csharp
 public class Db(DbContextOptions<Db> options) : DbContext(options) {
 }
 ```
+
+Using the `Db`, we should be able to register our database in our DI container:
 
 ```csharp
 builder.Services.AddDbContext<Db>((sp, options) =>
@@ -50,6 +58,8 @@ builder.Services.AddDbContext<Db>((sp, options) =>
 });
 ```
 
+Finally, let's test our setup by logging a connection result. Here's a code that does just that:
+
 ```csharp
 await using var scope = app.Services.CreateAsyncScope();
 var db = scope.ServiceProvider.GetRequiredService<Db>();
@@ -57,7 +67,7 @@ var canConnect = await db.Database.CanConnectAsync();
 app.Logger.LogInformation("Can connect to database: {CanConnect}", canConnect);
 ```
 
-`Program.cs`:
+Executing `dotnet run` should print `Can connect to database: True` in the console. And this is our setup - here's a complete `Program.cs`, just for reference:
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -79,6 +89,8 @@ app.Logger.LogInformation("Can connect to database: {CanConnect}", canConnect);
 public class Db(DbContextOptions<Db> options) : DbContext(options) {
 }
 ```
+
+Connecting to the database is all good, but how about we do some SQL? Let's move straight to it in the next section.
 
 ## First Query: Scaffolding our Database and Making an Example Request
 
