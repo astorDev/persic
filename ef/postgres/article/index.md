@@ -4,7 +4,7 @@
 
 ![](thumb.png)
 
-PostgreSQL is the most popular database out there, according to the [latest StackOverflow survey](https://survey.stackoverflow.co/2024/technology#1-databases). And, of course, EF Core, as a versatile ORM plays nicely with it. Still to integrate those two one will need to make a few steps with a few caveats along the way. In this article, we will go through those steps together, implementing a couple of helper methods to make the integration even simpler in the future.
+PostgreSQL is the most popular database out there, according to the [latest StackOverflow survey](https://survey.stackoverflow.co/2024/technology#1-databases). And, of course, EF Core, as a versatile ORM, plays nicely with it. Still to integrate those two, one will need to make a few steps with a few caveats along the way. In this article, we will go through those steps together, implementing a couple of helper methods to make the integration even simpler in the future.
 
 > If you just want to use the simplified PostgreSQL connection, jump straight to the end of this article to the [TLDR;](#tldr) section.
 
@@ -96,7 +96,7 @@ Connecting to the database is all good, but how about we do some SQL? Let's move
 
 ## First Query: Scaffolding our Database and Making an Example Request
 
-To execute a proper SQL query we'll need a table. Let’s scaffold a simple one, unoriginally called `Records`:
+To execute a proper SQL query, we'll need a table. Let’s scaffold a simple one, unoriginally called `Records`:
 
 ```csharp
 public class Db(DbContextOptions<Db> options) : DbContext(options) {
@@ -110,9 +110,9 @@ public class Record
 }
 ```
 
-For our experiments we'll need a fresh database with tables created on every start. Here's how we can do that:
+For our experiments, we'll need a fresh database with tables created on every start. Here's how we can do that:
 
-> A friendly reminder to not sure `EnsureDeleted` or `EnsureCreated` in a real application.
+> A friendly reminder to not use `EnsureDeleted` or `EnsureCreated` in a real application.
 
 ```csharp
 await db.Database.EnsureDeletedAsync();
@@ -179,7 +179,7 @@ builder.Services.AddDbContext<Db>((sp, options) =>
 });
 ```
 
-Obviously, we will also need to set the value. Our code shouldn't change in a bit, regardless of the configuration source used, but as I exaplained In [this article](https://medium.com/@vosarat1995/net-configuration-architecture-getting-started-87526b9fbc68), my configuration source for such values is `launchSettings.json`, so here's the line we'll need to add:
+Obviously, we will also need to set the value. Our code shouldn't change in a bit, regardless of the configuration source used, but as I explained in [this article](https://medium.com/@vosarat1995/net-configuration-architecture-getting-started-87526b9fbc68), my configuration source for such values is `launchSettings.json`, so here's the line we'll need to add:
 
 ```json
 "ConnectionStrings:Postgres" : "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=playground"
