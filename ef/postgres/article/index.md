@@ -2,6 +2,8 @@
 
 > A Practical Example of Connecting an ASP .NET Core App to PostgreSQL using Entity Framework
 
+![](thumb.png)
+
 PostgreSQL is the most popular database out there, according to the [latest StackOverflow survey](https://survey.stackoverflow.co/2024/technology#1-databases). And, of course, EF Core, as a versatile ORM plays nicely with it. Still to integrate those two one will need to make a few steps with a few caveats along the way. In this article, we will go through those steps together, implementing a couple of helper methods to make the integration even simpler in the future.
 
 > If you just want to use the simplified PostgreSQL connection, jump straight to the end of this article to the [TLDR;](#tldr) section.
