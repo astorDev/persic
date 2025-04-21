@@ -5,6 +5,19 @@ namespace Persic;
 
 public static class DbSetExtensions
 {
+    public static async Task<T> Put<T>(this DbSet<T> dbSet, T entity, Action<T>? useOldRecord = null) where T : class, IDbEntity<string>
+    {
+        var existing = await dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == entity.Id);
+
+        if (existing == null) dbSet.Add(entity);
+        else {
+            useOldRecord?.Invoke(existing);
+            dbSet.Update(entity);
+        }
+
+        return entity;
+    }
+
     public static async Task<T> Put<T>(this DbSet<T> dbSet, T entity, Action<T, T>? updateOverwrite = null) where T : class, IDbEntity<string>
     {
         var existing = await dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == entity.Id);
