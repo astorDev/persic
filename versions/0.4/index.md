@@ -1,5 +1,6 @@
 - [ ] `Persic.EF` <VERSION>
-    - [ ] `Put` `Func<T, T, T> updateOverwrite`
+    - [x] `Put` `Func<T, T, T> updateOverwrite`
+    - [x] `Put(Action<T> useOldRecord)`
 - [ ] `Persic.EF.Postgres` <VERSION>
     - [x] Overload allowing additional options override
     - [ ] Fresh version of `Persic.EF` (There's no dependency as of now - is it needed?)
