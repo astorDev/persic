@@ -1,7 +1,7 @@
-- [ ] `Persic.EF` <VERSION>
+- [x] `Persic.EF` **2025.104.130.15**
     - [x] `Put` `Func<T, T, T> updateOverwrite`
     - [x] `Put(Action<T> useOldRecord)`
-    - [ ] `EnsureRecreaated<Db>(Action<Task<Db>>? setup)`
-- [ ] `Persic.EF.Postgres` <VERSION>
+    - [x] `EnsureRecreaated<Db>(Action<Task<Db>>? setup)`
+- [x] `Persic.EF.Postgres` **2025.104.130.6**
     - [x] Overload allowing additional options override
-    - [ ] Fresh version of `Persic.EF`
+    - [x] Fresh version of `Persic.EF`
