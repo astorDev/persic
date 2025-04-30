@@ -1,10 +1,7 @@
 - [ ] `Persic.EF` <VERSION>
     - [x] `Put` `Func<T, T, T> updateOverwrite`
     - [x] `Put(Action<T> useOldRecord)`
+    - [ ] `EnsureRecreaated<Db>(Action<Task<Db>>? setup)`
 - [ ] `Persic.EF.Postgres` <VERSION>
     - [x] Overload allowing additional options override
-    - [ ] Fresh version of `Persic.EF` (There's no dependency as of now - is it needed?)
-- [ ] `Persic.Mongo` <VERSION>
-    - [ ] Improved Registration
-        - [ ] `AddMongo(string DatabaseConfigPath = "ConnectionStrings:Mongo")`
-        - [ ] Descriptive Exception for Collection Registration. [Issue](https://github.com/astorDev/persic/issues/20)
+    - [ ] Fresh version of `Persic.EF`
