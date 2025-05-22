@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
 
 namespace Persic;
 
-public static class PostgresRegistrationExtensions
+public static class RegistrationExtensions
 {
     public static IServiceCollection AddPostgres<TDbContext>(this IServiceCollection services, string configurationPath = "ConnectionStrings:Postgres", Action<NpgsqlDbContextOptionsBuilder>? configure = null)
         where TDbContext : DbContext
@@ -20,4 +20,13 @@ public static class PostgresRegistrationExtensions
 
         return services;
     }
+
+    public static DbContextOptionsBuilder UsePostgres<TDbContext>(this DbContextOptionsBuilder options, string connectionString, Action<NpgsqlDbContextOptionsBuilder>? configure = null)
+        where TDbContext : DbContext
+    {
+        return options
+            .UseNpgsql(connectionString, configure)
+            .UseSnakeCaseNamingConvention();
+    }
 }
+
