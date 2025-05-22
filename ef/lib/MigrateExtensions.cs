@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Persic;
@@ -19,10 +20,15 @@ public static class MigrateExternsions
     {
         await using var scope = services.CreateAsyncScope();
         var context = scope.ServiceProvider.GetRequiredService<T>();
-        await context.Database.EnsureDeletedAsync();
-        await context.Database.EnsureCreatedAsync();
+        await context.Database.EnsureRecreated();
 
         var setupTask = setup?.Invoke(context);
         if (setupTask != null) await setupTask;
+    }
+
+    public static async Task EnsureRecreated(this DatabaseFacade database)
+    {
+        await database.EnsureDeletedAsync();
+        await database.EnsureCreatedAsync();
     }
 }

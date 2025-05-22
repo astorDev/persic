@@ -12,13 +12,3 @@ public sealed class Ping
         await db.Database.OpenConnectionAsync();
     }
 }
-
-public class Db : DbContext
-{
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder
-            .UseNpgsql("Host=localhost;Port=5631;Database=postgres_search;Username=postgres_search;Password=postgres_search")
-            .UseSnakeCaseNamingConvention();
-    }
-}

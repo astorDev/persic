@@ -1,0 +1,17 @@
+name: Persic.EF.Postgres.Search NuGet
+on:
+  push:
+    paths:
+      - 'ef/postgres/search/lib/**'
+      - '.github/workflows/ef-postgres-search-nuget.yaml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Pack & Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/nuget@main
+        with:
+          project: ef/postgres/search/lib/Persic.EF.Postgres.Search
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}

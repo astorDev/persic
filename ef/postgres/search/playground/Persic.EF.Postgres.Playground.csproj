@@ -10,11 +10,15 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="MSTest" Version="3.6.1" />
-    <PackageReference Include="Persic.EF.Postgres" Version="2025.104.130.6" />
+    <PackageReference Include="Shouldly" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\lib\Persic.EF.Postgres.Search.csproj" />
   </ItemGroup>
 
 </Project>
