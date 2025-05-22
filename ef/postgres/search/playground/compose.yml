@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: postgres_search
+      POSTGRES_USER: postgres_search
+      POSTGRES_PASSWORD: postgres_search
+    ports:
+      - 5631:5432
