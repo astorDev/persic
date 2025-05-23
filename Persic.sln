@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "search", "search", "{E36D43
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persic.EF.Postgres.Playground", "ef\postgres\search\playground\Persic.EF.Postgres.Playground.csproj", "{4D69DE31-DC42-4D4D-B591-BD2AA196B1CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persic.EF.Postgres.Search", "ef\postgres\search\lib\Persic.EF.Postgres.Search.csproj", "{CEFCC03D-ADF7-45C6-811B-1F2755CC8E09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{4D69DE31-DC42-4D4D-B591-BD2AA196B1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D69DE31-DC42-4D4D-B591-BD2AA196B1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D69DE31-DC42-4D4D-B591-BD2AA196B1CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEFCC03D-ADF7-45C6-811B-1F2755CC8E09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEFCC03D-ADF7-45C6-811B-1F2755CC8E09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEFCC03D-ADF7-45C6-811B-1F2755CC8E09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEFCC03D-ADF7-45C6-811B-1F2755CC8E09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +101,6 @@ Global
 		{D90EBF4E-F140-4271-8919-3C090B4D4481} = {F3130FF4-71F0-4C3F-A17A-A3FDD7ABB5F3}
 		{E36D43CD-FE28-46EF-AF76-A6C6CE232138} = {7FDB2815-89B4-4E18-8EB9-000745432C7B}
 		{4D69DE31-DC42-4D4D-B591-BD2AA196B1CF} = {E36D43CD-FE28-46EF-AF76-A6C6CE232138}
+		{CEFCC03D-ADF7-45C6-811B-1F2755CC8E09} = {E36D43CD-FE28-46EF-AF76-A6C6CE232138}
 	EndGlobalSection
 EndGlobal

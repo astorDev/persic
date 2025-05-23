@@ -1,5 +1,4 @@
-
-- [ ] `Persic.Mongo` <VERSION>
-    - [ ] Improved Registration
-        - [ ] `AddMongo(string DatabaseConfigPath = "ConnectionStrings:Mongo")`
-        - [ ] Descriptive Exception for Collection Registration. [Issue](https://github.com/astorDev/persic/issues/20)
+- [ ] `Persic.EF.InMemory` <VERSION>
+    - [ ] `AddInMemory<TDb>` method
+- [x] `Persic.EF.Postgres.Search` <VERSION>
+    - [x] Project Inited with various helper methods
