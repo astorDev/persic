@@ -30,6 +30,8 @@ public static class MigrateExternsions
 
         var setupTask = setup?.Invoke(context);
         if (setupTask != null) await setupTask;
+
+        await context.SaveChangesAsync();
     }
     
     public static async Task EnsureRecreated(this DatabaseFacade database)

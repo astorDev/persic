@@ -9,6 +9,12 @@ public class DbRecord : IRecordWithSearchVector
     public required string Id { get; set; }
     public required string SearchTerms { get; set; }
     public NpgsqlTsVector SearchVector { get; set; } = null!;
+
+    public static DbRecord New(string searchTerms) => new()
+    {
+        Id = Guid.NewGuid().ToString(),
+        SearchTerms = searchTerms
+    };
 }
 
 public class Db : DbContext
@@ -42,58 +48,24 @@ public class Db : DbContext
 
 public static class SeededDb
 {
-    public static DbRecord RecordHelloWorld = new()
-    {
-        Id = Guid.NewGuid().ToString(),
-        SearchTerms = "Hello World!"
-    };
+    public static readonly DbRecord HelloWorld = DbRecord.New("Hello World!");
+    public static readonly DbRecord HelloJohn = DbRecord.New("Hello John!");
+    public static readonly DbRecord ByeJohn = DbRecord.New("Bye, John!");
+    public static readonly DbRecord Bye = DbRecord.New("Bye!");
+    public static readonly DbRecord JackBlack = DbRecord.New("Jack Black");
+    public static readonly DbRecord JackCustome = DbRecord.New("Jack Custome");
+    public static readonly DbRecord JackBrown = DbRecord.New("Jack Brown");
 
-    public static DbRecord RecordHelloJohn = new()
-    {
-        Id = Guid.NewGuid().ToString(),
-        SearchTerms = "Hello John!"
-    };
-
-    public static DbRecord RecordByeJohn = new()
-    {
-        Id = Guid.NewGuid().ToString(),
-        SearchTerms = "Bye, John!"
-    };
-
-    public static DbRecord RecordBye = new()
-    {
-        Id = Guid.NewGuid().ToString(),
-        SearchTerms = "Bye!"
-    };
-
-    public static DbRecord RecordJackBlack = new()
-    {
-        Id = Guid.NewGuid().ToString(),
-        SearchTerms = "Jack Black"
-    };
-
-    public static DbRecord RecordJackCustome = new()
-    {
-        Id = Guid.NewGuid().ToString(),
-        SearchTerms = "Jack Custome"
-    };
-
-    public static DbRecord RecordJackBrown = new()
-    {
-        Id = Guid.NewGuid().ToString(),
-        SearchTerms = "Jack Brown"
-    };
-
-    public static DbRecord[] Records = new[]
-    {
-        RecordHelloWorld,
-        RecordHelloJohn,
-        RecordByeJohn,
-        RecordBye,
-        RecordJackBlack,
-        RecordJackCustome,
-        RecordJackBrown
-    };
+    public static readonly DbRecord[] Records =
+    [
+        HelloWorld,
+        HelloJohn,
+        ByeJohn,
+        Bye,
+        JackBlack,
+        JackCustome,
+        JackBrown
+    ];
 
     public static Db New()
     {
