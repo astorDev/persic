@@ -20,12 +20,18 @@ public static class MigrateExternsions
     {
         await using var scope = services.CreateAsyncScope();
         var context = scope.ServiceProvider.GetRequiredService<T>();
+        await context.EnsureRecreated(setup);
+    }
+
+    public static async Task EnsureRecreated<TContext>(this TContext context, Func<TContext, Task>? setup = null)
+        where TContext : DbContext
+    {
         await context.Database.EnsureRecreated();
 
         var setupTask = setup?.Invoke(context);
         if (setupTask != null) await setupTask;
     }
-
+    
     public static async Task EnsureRecreated(this DatabaseFacade database)
     {
         await database.EnsureDeletedAsync();

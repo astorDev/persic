@@ -8,6 +8,92 @@ However, since Postgres 8.3, we got a thing called `tsvector`, providing us a po
 
 > Or jump straight to the [TLDR](#tldr) at the end of this article for a short reference.
 
+## Setting Up Our Database
+
+
+
+```sh
+dotnet add package Persic.EF.Postgres
+```
+
+```csharp
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: postgres_search
+      POSTGRES_USER: postgres_search
+      POSTGRES_PASSWORD: postgres_search
+    ports:
+      - 5631:5432
+```
+
+```csharp
+public class DbRecord
+{
+    public required string Id { get; set; }
+    public required string SearchTerms { get; set; }
+    public NpgsqlTsVector SearchVector { get; set; } = null!;
+}
+
+public class Db : DbContext
+{
+    public DbSet<DbRecord> Records { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .UseNpgsql("Host=localhost;Port=5631;Database=postgres_search;Username=postgres_search;Password=postgres_search")
+            .UseSnakeCaseNamingConvention();
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<DbRecord>()
+            .HasGeneratedTsVectorColumn(
+                p => p.SearchVector,
+                "english",
+                p => p.SearchTerms
+            )
+            .HasIndex(p => p.SearchVector)
+            .HasMethod("GIN");
+    }
+}
+```
+
+```csharp
+public class DbRecord
+{
+    public required string Id { get; set; }
+    public required string SearchTerms { get; set; }
+    public NpgsqlTsVector SearchVector { get; set; } = null!;
+}
+
+public class Db : DbContext
+{
+    public DbSet<DbRecord> Records { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .UseNpgsql("Host=localhost;Port=5631;Database=postgres_search;Username=postgres_search;Password=postgres_search")
+            .UseSnakeCaseNamingConvention();
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<DbRecord>()
+            .HasGeneratedTsVectorColumn(
+                p => p.SearchVector,
+                "english",
+                p => p.SearchTerms
+            )
+            .HasIndex(p => p.SearchVector)
+            .HasMethod("GIN");
+    }
+}
+```
+
 ## TLDR
 
 In this article, we've experimented with search functionality in PostgreSQL using Entity Framework. Along the way, we've made a few helpers. Instead of recreating those helpers, you can install a dedicated NuGet package like this:

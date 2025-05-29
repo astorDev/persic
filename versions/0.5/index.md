@@ -1,4 +1,7 @@
 - [ ] `Persic.EF.InMemory` <VERSION>
     - [ ] `AddInMemory<TDb>` method
+- [ ] `Persic.EF.Postgres` <VERSION>
+    - [ ] `UsePostgres`: no generic argument required
+    - [ ] `EnsureRecreated<TContext>(setup)` helper method
 - [x] `Persic.EF.Postgres.Search` <VERSION>
     - [x] Project Inited with various helper methods
