@@ -15,18 +15,16 @@ public static class RegistrationExtensions
         {
             var config = sp.GetRequiredService<IConfiguration>();
             var connectionString = config.GetRequiredValue(configurationPath);
-            options.UseNpgsql(connectionString, configure).UseSnakeCaseNamingConvention();
+            options.UsePostgres(connectionString, configure);
         });
 
         return services;
     }
 
-    public static DbContextOptionsBuilder UsePostgres<TDbContext>(this DbContextOptionsBuilder options, string connectionString, Action<NpgsqlDbContextOptionsBuilder>? configure = null)
-        where TDbContext : DbContext
+    public static DbContextOptionsBuilder UsePostgres(this DbContextOptionsBuilder options, string connectionString, Action<NpgsqlDbContextOptionsBuilder>? configure = null)
     {
         return options
             .UseNpgsql(connectionString, configure)
             .UseSnakeCaseNamingConvention();
     }
 }
-
