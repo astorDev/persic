@@ -23,6 +23,22 @@ public static class MigrateExternsions
         await context.EnsureRecreated(setup);
     }
 
+    public static async Task EnsureRecreated<T>(this IServiceProvider services, Action<T>? setup = null) where T : DbContext
+    {
+        await using var scope = services.CreateAsyncScope();
+        var context = scope.ServiceProvider.GetRequiredService<T>();
+        await context.EnsureRecreated(setup);
+    }
+
+    public static async Task EnsureRecreated<TContext>(this TContext context, Action<TContext>? setup = null)
+        where TContext : DbContext
+    {
+        await context.Database.EnsureRecreated();
+
+        setup?.Invoke(context);
+        await context.SaveChangesAsync();
+    }
+
     public static async Task EnsureRecreated<TContext>(this TContext context, Func<TContext, Task>? setup = null)
         where TContext : DbContext
     {

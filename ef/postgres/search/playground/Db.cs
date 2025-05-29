@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NpgsqlTypes;
 using Persic.EF.Postgres.Search;
@@ -24,8 +25,7 @@ public class Db : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            .UseNpgsql("Host=localhost;Port=5631;Database=postgres_search;Username=postgres_search;Password=postgres_search")
-            .UseSnakeCaseNamingConvention();
+            .UsePostgres("Host=localhost;Port=5631;Database=postgres_search;Username=postgres_search;Password=postgres_search");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -67,14 +67,15 @@ public static class SeededDb
         JackBrown
     ];
 
-    public static Db New()
+    public static async Task<Db> New()
     {
         var db = new Db();
-        db.Database.EnsureDeleted();
-        db.Database.EnsureCreated();
+        
+        await db.Database.EnsureDeletedAsync();
+        await db.Database.EnsureCreatedAsync();
 
         db.Records.AddRange(Records);
-        db.SaveChanges();
+        await db.SaveChangesAsync();
 
         return db;
     }
