@@ -10,7 +10,7 @@ However, since Postgres 8.3, we got a thing called `tsvector`, providing us a po
 
 ## Setting Up Our Database
 
-
+> `dotnet new console` or `dotnet new mstest`
 
 ```sh
 dotnet add package Persic.EF.Postgres
@@ -29,70 +29,95 @@ services:
 ```
 
 ```csharp
-public class DbRecord
-{
-    public required string Id { get; set; }
-    public required string SearchTerms { get; set; }
-    public NpgsqlTsVector SearchVector { get; set; } = null!;
-}
-
 public class Db : DbContext
 {
-    public DbSet<DbRecord> Records { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            .UseNpgsql("Host=localhost;Port=5631;Database=postgres_search;Username=postgres_search;Password=postgres_search")
-            .UseSnakeCaseNamingConvention();
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<DbRecord>()
-            .HasGeneratedTsVectorColumn(
-                p => p.SearchVector,
-                "english",
-                p => p.SearchTerms
-            )
-            .HasIndex(p => p.SearchVector)
-            .HasMethod("GIN");
+            .UsePostgres("Host=localhost;Port=5631;Database=postgres_search;Username=postgres_search;Password=postgres_search");
     }
 }
 ```
+
+```csharp
+using var db = new Db();
+await db.Database.OpenConnectionAsync();
+```
+
+## Making Our First TsVector Query
+
+
 
 ```csharp
 public class DbRecord
 {
     public required string Id { get; set; }
     public required string SearchTerms { get; set; }
-    public NpgsqlTsVector SearchVector { get; set; } = null!;
+
+    public static DbRecord New(string searchTerms) => new()
+    {
+        Id = Guid.NewGuid().ToString(),
+        SearchTerms = searchTerms
+    };
 }
 
 public class Db : DbContext
 {
     public DbSet<DbRecord> Records { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder
-            .UseNpgsql("Host=localhost;Port=5631;Database=postgres_search;Username=postgres_search;Password=postgres_search")
-            .UseSnakeCaseNamingConvention();
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<DbRecord>()
-            .HasGeneratedTsVectorColumn(
-                p => p.SearchVector,
-                "english",
-                p => p.SearchTerms
-            )
-            .HasIndex(p => p.SearchVector)
-            .HasMethod("GIN");
-    }
+    // ..
 }
 ```
+
+```csharp
+public static class Seeds
+{
+    public const string HelloWorld = "Hello World!";
+    public const string HelloJohn = "Hello John!";
+    public const string ByeJohn = "Bye, John!";
+    public const string Bye = "Bye!";
+    public const string JackBlack = "Jack Black";
+    public const string JackCustome = "Jack Custome";
+    public const string JackBrown = "Jack Brown";
+
+    public static readonly string[] All =
+    [
+        HelloWorld,
+        HelloJohn,
+        ByeJohn,
+        Bye,
+        JackBlack,
+        JackCustome,
+        JackBrown
+    ];
+
+    public static T[] As<T>(Func<string, T> factory) => [.. All.Select(factory)];
+}
+```
+
+```csharp
+public static async Task<Db> Seeded()
+{
+    var db = new Db();
+    var seeds = Seeds.As(DbRecord.New);
+    await db.EnsureRecreated(x => x.Records.AddRange(seeds));
+    return db;
+}
+```
+
+```csharp
+using var db = await Db.Seeded();
+
+var result = await db.Records
+    .Where(x =>
+        EFHelpers.Functions.ToTsVector(x.SearchTerms).Matches("Hello World")
+    )
+    .ToListAsync();
+```
+
+## Using Advanced Text Search Patterns
+
+## Improving Performance With TsVector Columns
 
 ## TLDR
 

@@ -10,7 +10,7 @@ public class ExtensionStarts
     [TestMethod]
     public async Task HelloWorld()
     {
-        using var db = SeededDb.New();
+        using var db = await SeededDb.New();
 
         var result = await db.Records
             .WhereSearchVectorStartsWithAllIn("hello world")
@@ -22,7 +22,7 @@ public class ExtensionStarts
     [TestMethod]
     public async Task Hello()
     {
-        using var db = SeededDb.New();
+        using var db = await SeededDb.New();
 
         var result = await db.Records
             .WhereSearchVectorStartsWithAllIn("hello")
@@ -34,7 +34,7 @@ public class ExtensionStarts
     [TestMethod]
     public async Task Bye()
     {
-        using var db = SeededDb.New();
+        using var db = await SeededDb.New();
 
         var result = await db.Records
             .WhereSearchVectorStartsWithAllIn("bye")
@@ -46,8 +46,7 @@ public class ExtensionStarts
     [TestMethod]
     public async Task Jo()
     {
-        using var db = SeededDb.New();
-        await db.SaveChangesAsync();
+        using var db = await SeededDb.New();
 
         var result = await db.Records
             .WhereSearchVectorStartsWithAllIn("jo")
@@ -59,8 +58,7 @@ public class ExtensionStarts
     [TestMethod]
     public async Task JackB()
     {
-        using var db = SeededDb.New();
-        await db.SaveChangesAsync();
+        using var db = await SeededDb.New();
 
         var result = await db.Records
             .WhereSearchVectorStartsWithAllIn("jack b")

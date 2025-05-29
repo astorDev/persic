@@ -3,3 +3,11 @@ test:
 
 prep:
 	docker compose up -d
+
+down:
+	docker compose down
+	docker volume prune -f
+
+reset:
+	make down
+	make prep

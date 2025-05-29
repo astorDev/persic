@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NpgsqlTypes;
 using Persic.EF.Postgres.Search;
@@ -70,13 +69,7 @@ public static class SeededDb
     public static async Task<Db> New()
     {
         var db = new Db();
-        
-        await db.Database.EnsureDeletedAsync();
-        await db.Database.EnsureCreatedAsync();
-
-        db.Records.AddRange(Records);
-        await db.SaveChangesAsync();
-
+        await db.EnsureRecreated(x => x.Records.AddRange(Records));
         return db;
     }
 }

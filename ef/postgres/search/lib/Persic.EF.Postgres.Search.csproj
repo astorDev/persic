@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Persic.EF" Version="2025.105.129.20" />
+    <PackageReference Include="Persic.EF" Version="2025.105.129.21" />
     <PackageReference Include="Persic.EF.Postgres" Version="2025.105.129.10" />
   </ItemGroup>
 
