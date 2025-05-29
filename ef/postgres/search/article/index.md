@@ -4,9 +4,9 @@
 
 Text search is something relational databases have historically struggled with. This limitation even led to a rise of dedicated search tools, like Elasticsearch.
 
-However, since Postgres 8.3, we got a thing called `tsvector`, providing us a powerful way to query our data straight from the relational database. In this article, we are going to play around with the text search in PostgreSQL, and build a few helpers using .NET 9 and Entity Framework Core.
+However, since Postgres 8.3, we got a thing called `tsvector`, providing us a powerful way to query our data straight from the relational database. In this article, we are going to play around with the text search in PostgreSQL and build a few helpers using .NET 9 and Entity Framework Core.
 
-> Or jump straight to the [TLDR](#tldr) in the end of this article for a short reference.
+> Or jump straight to the [TLDR](#tldr) at the end of this article for a short reference.
 
 ## TLDR
 
@@ -36,7 +36,7 @@ modelBuilder.Entity<DbRecord>()
             );
 ```
 
-And finally query your record using a simple extension method:
+And finally, query your record using a simple extension method:
 
 ```csharp
 var result = await db.Records
