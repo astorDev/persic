@@ -74,6 +74,8 @@ Hopefully, you were able to connect successfully. With our setup done, let's mov
 
 ## Making Our First TsVector Query
 
+Before we start querying our database we need some data in there. We'll create relatively similar data, demonstrating various usage of the text-search. Let's create a helper class just for that:
+
 ```csharp
 public static class Seeds
 {
@@ -100,6 +102,8 @@ public static class Seeds
 }
 ```
 
+Let's also create a helper method, that spins up our database with the data above. We'll use `EnsureRecreated` helper method from the `Persic.EF` package:
+
 ```csharp
 public static async Task<Db> Seeded()
 {
@@ -109,6 +113,16 @@ public static async Task<Db> Seeded()
     return db;
 }
 ```
+
+Finally, let's query the database. We'll convert the values from the `SearchTerms` column and use a special `TsVector` method called `Matches` to seek records by the `Hello World` pattern:
+
+```csharp
+db.Records.Where(x =>
+    EFHelpers.Functions.ToTsVector(x.SearchTerms).Matches("Hello World")
+)
+```
+
+With our result printed to the console, our experiment code should look like this:
 
 ```csharp
 using var db = await Db.Seeded();
@@ -126,9 +140,13 @@ foreach (var record in result)
     Console.WriteLine($"record: {record.Id} = '{record.SearchTerms}'");
 ```
 
+This should give us the output below:
+
 ```text
 record: 3ea00302-5dbd-468d-a41e-3b97155e3f28 = 'Hello World!'
 ```
+
+Our search is working! But it's not that exciting since we match the words almost literally. Let's do something much more interesting in the next section.
 
 ## Using Advanced Text Search Patterns
 
