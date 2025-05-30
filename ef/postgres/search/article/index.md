@@ -10,11 +10,7 @@ However, since Postgres 8.3, we got a thing called `tsvector`, providing us a po
 
 ## Setting Up Our Database
 
-> `dotnet new console` or `dotnet new mstest`
-
-```sh
-dotnet add package Persic.EF.Postgres
-```
+To start, let’s set up a local instance of PostgreSQL. Here’s a simple `compose.yml` that does just that:
 
 ```csharp
 services:
@@ -27,6 +23,20 @@ services:
     ports:
       - 5631:5432
 ```
+
+Of course, we will also need a .NET project. For this article, a simple console app will be just fine. You can create it with the following command:
+
+```sh
+dotnet new console
+```
+
+In [this article](https://medium.com/@vosarat1995/integrating-postgresql-with-net-9-using-ef-core-a-step-by-step-guide-a773768777f2) about integrating PostgreSQL and .NET we've discovered a NuGet package greatly simplifying the setup. Let's install it:
+
+```sh
+dotnet add package Persic.EF.Postgres
+```
+
+Finally, let's define our database. For our model, we'll need only `SearchTerms` – a string against which we will perform searches. Here's the code:
 
 ```csharp
 public class DbRecord
@@ -53,10 +63,14 @@ public class Db : DbContext
 }
 ```
 
+To ensure our setup works, let's open a connection to our database:
+
 ```csharp
 using var db = new Db();
 await db.Database.OpenConnectionAsync();
 ```
+
+Hopefully, you were able to connect successfully. With our setup done, let's move to the interesting part: performing the search.
 
 ## Making Our First TsVector Query
 
@@ -118,7 +132,7 @@ record: 3ea00302-5dbd-468d-a41e-3b97155e3f28 = 'Hello World!'
 
 ## Using Advanced Text Search Patterns
 
-**case incencitive**
+**case insensitive**
 
 ```csharp
 var result = await db.Records
@@ -163,7 +177,7 @@ record: 6babd703-97ed-4373-835b-5b6ac733e7df = 'Jack Custome'
 record: eb61ab0a-2773-4422-9c92-0856dc31756b = 'Jack Brown'
 ```
 
-**Doesn't have to be in the start and properly splits the words**
+**Doesn't have to be at the start and properly splits the words**
 
 ```csharp
 var result = await db.Records
