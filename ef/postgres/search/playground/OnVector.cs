@@ -51,7 +51,51 @@ public class OnVector
     }
 
     [TestMethod]
-    public async Task Jo()
+    public async Task JaLiterally()
+    {
+        using var db = await Db.Seeded();
+
+        var result = await db.Records
+            .Where(x =>
+                x.SearchVector.Matches("ja")
+            )
+            .ToListAsync();
+
+        Assert(result, 0);
+    }
+
+    [TestMethod]
+    public async Task JohnLiterally()
+    {
+        using var db = await Db.Seeded();
+
+        var result = await db.Records
+            .Where(x =>
+                x.SearchVector.Matches("john")
+            )
+            .ToListAsync();
+
+        Assert(result, 2);
+    }
+
+    [TestMethod]
+    public async Task JaStart()
+    {
+        using var db = await Db.Seeded();
+
+        var result = await db.Records
+            .Where(x =>
+                x.SearchVector.Matches(
+                    EFHelpers.Functions.ToTsQuery("ja:*")
+                )
+            )
+            .ToListAsync();
+
+        Assert(result, 3);
+    }
+
+    [TestMethod]
+    public async Task JoStart()
     {
         using var db = await Db.Seeded();
 
@@ -86,10 +130,11 @@ public class OnVector
     {
         result.Count().ShouldBe(count);
 
+        if (!result.Any())
+            Console.WriteLine("No records found.");
+
         foreach (var record in result)
-        {
             Console.WriteLine($"record: {record.Id} = '{record.SearchTerms}'");
-        }
     }
 
     public class DbRecord
