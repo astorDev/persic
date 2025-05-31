@@ -4,7 +4,7 @@ using Amazon.S3.Model;
 namespace Persic.Files.Playground;
 
 [TestClass]
-public class MinioTests
+public class Minio
 {
     [TestMethod]
     public void Connect()
@@ -16,6 +16,33 @@ public class MinioTests
         foreach (var bucket in response.Buckets)
         {
             Console.WriteLine($"Bucket: {bucket.BucketName}, Created: {bucket.CreationDate}");
+        }
+    }
+
+    [TestMethod]
+    public void GetInvoice()
+    {
+        var client = MinioClientFactory.Create();
+        var bucketName = "one";
+        var fileName = "invoice.pdf";
+
+        var request = new GetObjectRequest
+        {
+            BucketName = bucketName,
+            Key = fileName
+        };
+
+        var returned = client.GetObjectAsync(request).GetAwaiter().GetResult();
+
+        using var responseStream = returned.ResponseStream;
+        using var reader = new StreamReader(responseStream);
+        var contentRead = reader.ReadToEnd();
+
+        Console.WriteLine($"File content: {contentRead}, Headers: {returned.Headers}");
+
+        foreach (var key in returned.Headers.Keys)
+        {
+            Console.WriteLine($"{key}: {returned.Headers[key]}");
         }
     }
 
@@ -52,7 +79,11 @@ public class MinioTests
         using var responseStream = returned.ResponseStream;
         using var reader = new StreamReader(responseStream);
         var contentRead = reader.ReadToEnd();
-        Console.WriteLine($"File content: {contentRead}");
+        Console.WriteLine($"File content: {contentRead}, Headers: {returned.Headers}");
+        foreach (var key in returned.Headers.Keys)
+        {
+            Console.WriteLine($"{key}: {returned.Headers[key]}");
+        }
         Assert.AreEqual(content, contentRead);
     }
 }
