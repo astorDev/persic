@@ -226,9 +226,13 @@ We've seen enough of the text searches. We have one more vital point to cover. L
 
 ## Improving Performance With TsVector Columns
 
+Our queries so far were converting text in our column to a search vector on the fly. It was fine for our 7-records database. However, this will be problematic with any significant data set. Instead, we should have a column already containing our search vector:
+
 ```csharp
 public NpgsqlTsVector SearchVector { get; set; } = null!;
 ```
+
+In order to fill the column, we'll use automatic generation from the `SearchTerms` column. Additionally, we'll index the column with a Generic-Inverted Index (GIN) to get sensible query performance:
 
 ```csharp
 modelBuilder.Entity<DbRecord>()
@@ -240,6 +244,8 @@ modelBuilder.Entity<DbRecord>()
     .HasIndex(p => p.SearchVector)
     .HasMethod("GIN");
 ```
+
+Here's how our complete database code will look after the updates:
 
 ```csharp
 public class DbRecord
@@ -287,6 +293,10 @@ public class Db : DbContext
 }
 ```
 
+Now, we will be able to omit the conversion code and match straight against the `SearchVector` column.
+
+Let's check it out with a fancy query for all Jacks, having their last name starting with the `b`:
+
 ```csharp
 var result = await db.Records
     .Where(x =>
@@ -297,10 +307,14 @@ var result = await db.Records
     .ToListAsync();
 ```
 
+The code should give us a proper result:
+
 ```
 record: 9d59f3da-7e9a-403d-bc19-6b6b72caefbe = 'Jack Black'
 record: f04ea976-0e89-4353-b43f-39cb4de731d4 = 'Jack Brown'
 ```
+
+This wraps up the main part of the article. However, there's a bonus in the last section simplifying working with queries even more. Let's get closer to the finish line!
 
 ## TLDR
 
