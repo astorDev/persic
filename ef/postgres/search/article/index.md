@@ -74,7 +74,7 @@ Hopefully, you were able to connect successfully. With our setup done, let's mov
 
 ## Making Our First TsVector Query
 
-Before we start querying our database we need some data in there. We'll create relatively similar data, demonstrating various usage of the text-search. Let's create a helper class just for that:
+Before we start querying our database, we need some data in there. We'll create relatively similar data, demonstrating various uses of the text search. Let's create a helper class just for that:
 
 ```csharp
 public static class Seeds
@@ -102,7 +102,7 @@ public static class Seeds
 }
 ```
 
-Let's also create a helper method, that spins up our database with the data above. We'll use `EnsureRecreated` helper method from the `Persic.EF` package:
+Let's also create a helper method that spins up our database with the data above. We'll use `EnsureRecreated` helper method from the `Persic.EF` package:
 
 ```csharp
 public static async Task<Db> Seeded()
@@ -152,7 +152,7 @@ Our search is working! But it's not that exciting since we match the words almos
 
 In this section, we will conduct a few experiments with different search scenarios and see how to handle them properly.
 
-First, let's check if our queries are **case insensitive**. Will a lower case `hello` return any matching record:
+First, let's check if our queries are **case insensitive**. Will a lower-case `hello` return any matching record?
 
 ```csharp
 var result = await db.Records
@@ -185,7 +185,7 @@ Here's what this is going to print:
 No records found.
 ```
 
-As you might see, the query didn't match any occurrence of certain letters. Instead it seems to match **the whole word by default**. But what if we want a user to see suggestions before the exact match? Turns out, there's a special text search syntax in PostgreSQL. In our case, we'll need our query letters to match **just the beginning of the word**. We can achieve that with `:*` suffix:
+As you might see, the query didn't match any occurrence of certain letters. Instead, it seems to match **the whole word by default**. But what if we want a user to see suggestions before the exact match? Turns out, there's a special text search syntax in PostgreSQL. In our case, we'll need our query letters to match **just the beginning of the word**. We can achieve that with `:*` suffix:
 
 ```csharp
 var result = await db.Records
@@ -226,7 +226,7 @@ We've seen enough of the text searches. We have one more vital point to cover. L
 
 ## Improving Performance With TsVector Columns
 
-Our queries so far were converting text in our column to a search vector on the fly. It was fine for our 7-records database. However, this will be problematic with any significant data set. Instead, we should have a column already containing our search vector:
+Our queries so far have been converting text in our column to a search vector on the fly. It was fine for our 7-records database. However, this will be problematic with any significant data set. Instead, we should have a column already containing our search vector:
 
 ```csharp
 public NpgsqlTsVector SearchVector { get; set; } = null!;
@@ -314,7 +314,7 @@ record: 9d59f3da-7e9a-403d-bc19-6b6b72caefbe = 'Jack Black'
 record: f04ea976-0e89-4353-b43f-39cb4de731d4 = 'Jack Brown'
 ```
 
-This wraps up the main part of the article. However, there's a bonus in the last section simplifying working with queries even more. Let's get closer to the finish line!
+This wraps up the main part of the article. However, there's a bonus in the last section, simplifying working with queries even more. Let's get closer to the finish line!
 
 ## TLDR
 
