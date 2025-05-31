@@ -1,0 +1,72 @@
+using Amazon.S3;
+using Amazon.S3.Model;
+
+namespace Persic.Files.Playground;
+
+[TestClass]
+public class MinioTests
+{
+    [TestMethod]
+    public void Connect()
+    {
+        var client = MinioClientFactory.Create();
+
+        var response = client.ListBucketsAsync().GetAwaiter().GetResult();
+
+        foreach (var bucket in response.Buckets)
+        {
+            Console.WriteLine($"Bucket: {bucket.BucketName}, Created: {bucket.CreationDate}");
+        }
+    }
+
+    [TestMethod]
+    public void SaveFile()
+    {
+        var client = MinioClientFactory.Create();
+        var bucketName = "one";
+        var fileName = "test-file.txt";
+        var content = "Hello, Minio!";
+
+        // Upload the file
+        using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)))
+        {
+            var putObjectRequest = new PutObjectRequest
+            {
+                BucketName = bucketName,
+                Key = fileName,
+                InputStream = stream,
+                ContentType = "text/plain"
+            };
+
+            client.PutObjectAsync(putObjectRequest).GetAwaiter().GetResult();
+        }
+
+        var request = new GetObjectRequest
+        {
+            BucketName = bucketName,
+            Key = fileName
+        };
+
+        var returned = client.GetObjectAsync(request).GetAwaiter().GetResult();
+
+        using var responseStream = returned.ResponseStream;
+        using var reader = new StreamReader(responseStream);
+        var contentRead = reader.ReadToEnd();
+        Console.WriteLine($"File content: {contentRead}");
+        Assert.AreEqual(content, contentRead);
+    }
+}
+
+public class MinioClientFactory
+{
+    public static AmazonS3Client Create()
+    {
+        var config = new AmazonS3Config
+        {
+            ServiceURL = "http://localhost:9000",
+            ForcePathStyle = true
+        };
+
+        return new AmazonS3Client("minio", "minioP@ssw0rd", config);
+    }
+}
