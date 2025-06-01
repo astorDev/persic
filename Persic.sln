@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{9095F2B2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persic.Files.Playground", "files\play\Persic.Files.Playground.csproj", "{79D460CD-06E0-44DB-88C1-7C51BAD60F0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persic.Files", "files\lib\Persic.Files.csproj", "{A0D15FBF-AAB9-46FD-A7D2-16EF7D9D503F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{79D460CD-06E0-44DB-88C1-7C51BAD60F0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79D460CD-06E0-44DB-88C1-7C51BAD60F0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79D460CD-06E0-44DB-88C1-7C51BAD60F0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0D15FBF-AAB9-46FD-A7D2-16EF7D9D503F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0D15FBF-AAB9-46FD-A7D2-16EF7D9D503F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0D15FBF-AAB9-46FD-A7D2-16EF7D9D503F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0D15FBF-AAB9-46FD-A7D2-16EF7D9D503F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,5 +117,6 @@ Global
 		{4D69DE31-DC42-4D4D-B591-BD2AA196B1CF} = {E36D43CD-FE28-46EF-AF76-A6C6CE232138}
 		{CEFCC03D-ADF7-45C6-811B-1F2755CC8E09} = {E36D43CD-FE28-46EF-AF76-A6C6CE232138}
 		{79D460CD-06E0-44DB-88C1-7C51BAD60F0E} = {9095F2B2-7C8D-46DC-94F2-4FC64759552A}
+		{A0D15FBF-AAB9-46FD-A7D2-16EF7D9D503F} = {9095F2B2-7C8D-46DC-94F2-4FC64759552A}
 	EndGlobalSection
 EndGlobal

@@ -47,6 +47,34 @@ public class Minio
     }
 
     [TestMethod]
+    public void GetInvoicePresignedUrl()
+    {
+        var client = MinioClientFactory.Create();
+        var bucketName = "one";
+        var fileName = "invoice.pdf";
+
+        var request = new GetPreSignedUrlRequest
+        {
+            BucketName = bucketName,
+            Key = fileName,
+            Expires = DateTime.UtcNow.AddMinutes(10), // URL valid for 10 minutes
+            Verb = HttpVerb.GET,
+        };
+
+        var presignedUrl = client.GetPreSignedURL(request).Replace("https", "http");
+
+        Console.WriteLine($"Presigned URL: {presignedUrl}");
+
+        // Optionally, you can test the URL by downloading the file using HttpClient
+        using var httpClient = new HttpClient();
+        var response = httpClient.GetAsync(presignedUrl).Sync();
+        var content = response.Content.ReadAsStringAsync().Sync();
+
+        Console.WriteLine($"Downloaded content: {content}");
+        Assert.IsTrue(response.IsSuccessStatusCode);
+    }
+
+    [TestMethod]
     public void SaveFile()
     {
         var client = MinioClientFactory.Create();

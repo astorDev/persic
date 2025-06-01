@@ -23,4 +23,8 @@
     <Using Include="Shouldly" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\lib\Persic.Files.csproj" />
+  </ItemGroup>
+
 </Project>

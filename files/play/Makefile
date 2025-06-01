@@ -1,5 +1,8 @@
 TEST ?= main
 
+prep:
+	docker compose up -d
+
 run:
 	dotnet run
 
