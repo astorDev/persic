@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Persic.EF" Version="2025.105.129.21" />
-    <PackageReference Include="Persic.EF.Postgres" Version="2025.105.129.10" />
+    <PackageReference Include="Persic.EF.Postgres" Version="2025.106.102.11" />
   </ItemGroup>
 
 </Project>

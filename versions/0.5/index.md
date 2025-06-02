@@ -1,8 +1,8 @@
 - [x] `Persic.EF` **2025.105.129.21**
     - [x] `EnsureRecreated<TContext>(setup)` helper method
-- [ ] `Persic.EF.Postgres` <VERSION>
-    - [ ] `UsePostgres` - no generic argument needed
-    - [ ] Fresh Version of `Persic.EF`
+- [x] `Persic.EF.Postgres` **2025.106.102.11**
+    - [x] `UsePostgres` - no generic argument needed
+    - [x] Fresh Version of `Persic.EF`
 - [x] `Persic.EF.Postgres.Search` <VERSION>
     - [x] Project Inited with various helper methods
     - [ ] Fresh Version of `Persic.EF`
