@@ -3,6 +3,6 @@
 - [x] `Persic.EF.Postgres` **2025.106.102.11**
     - [x] `UsePostgres` - no generic argument needed
     - [x] Fresh Version of `Persic.EF`
-- [x] `Persic.EF.Postgres.Search` <VERSION>
+- [x] `Persic.EF.Postgres.Search` **2025.106.102.5**
     - [x] Project Inited with various helper methods
-    - [ ] Fresh Version of `Persic.EF`
+    - [x] Fresh Version of `Persic.EF`
