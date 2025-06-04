@@ -1,6 +1,6 @@
-# 🍑 Persic: C# Persistance In It's Finest
+# 🍑 Persic 
 
-> Various .NET DB tools, Findings, and More.
+> C# Persistance In It's Finest. Various .NET DB tools, Findings, and More.
 
 ## 🐘 Postgres
 
