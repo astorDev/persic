@@ -1,4 +1,4 @@
-using Persic.Files;
+using Persic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +8,9 @@ builder.Services.AddS3("ServiceURL=http://localhost:9000;AccessKeyId=minio;Secre
 
 var app = builder.Build();
 
-app.MapGet("/invoice", (S3Client client) =>
+app.MapGet("/invoice", async (S3Client client) =>
 {
-    var response = client.GetObjectSync("one", "invoice.pdf");
+    var response = await client.GetObject("one", "invoice.pdf");
 
     return Results.File(
         response.ResponseStream,
@@ -36,7 +36,7 @@ app.MapPost("/upload", async (HttpRequest request, S3Client client) =>
     var fileName = file.FileName;
 
     using var stream = file.OpenReadStream();
-    client.PutObjectSync(bucketName, fileName, stream, file.ContentType);
+    await client.PutObject(bucketName, fileName, stream, file.ContentType);
 
     return Results.Ok(new { fileName });
 });
