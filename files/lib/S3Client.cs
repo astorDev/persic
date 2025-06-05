@@ -40,11 +40,15 @@ public record S3Configuration(
     }
 }
 
+public record S3RegistrationBuilder(IServiceCollection Services);
+
 public static class S3Registration
 {
-    public static IServiceCollection AddS3(this IServiceCollection services, string rawConnectionString)
+    public static S3RegistrationBuilder AddS3(this IServiceCollection services, string rawConnectionString)
     {
         var configuration = S3Configuration.Parse(rawConnectionString);
-        return services.AddSingleton(new S3Client(configuration));
+        services.AddSingleton(new S3Client(configuration));
+
+        return new S3RegistrationBuilder(services);
     }
 }

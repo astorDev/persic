@@ -4,41 +4,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddSimpleConsole(c => c.SingleLine = true);
 
-builder.Services.AddS3("ServiceURL=http://localhost:9000;AccessKeyId=minio;SecretAccessKey=minioP@ssw0rd;ForcePathStyle=true");
+builder.Services.AddS3("ServiceURL=http://localhost:9000;AccessKeyId=minio;SecretAccessKey=minioP@ssw0rd;ForcePathStyle=true")
+    .WithBucket("my-web-app");
 
 var app = builder.Build();
 
-app.MapGet("/invoice", async (S3Client client) =>
-{
-    var response = await client.GetObject("one", "invoice.pdf");
+var bucket = app.Services.GetRequiredService<S3BucketClient>();
 
-    return Results.File(
-        response.ResponseStream,
-        response.Headers.ContentType,
-        "invoice.pdf"
-    );
-});
+await bucket.EnsureInited();
 
-app.MapGet("/presigned/{filename}", (string filename, S3Client client) =>
-{
-    var presignedUrl = client.GetPresignedUrl("one", filename);
-    return Results.Redirect(presignedUrl);
-});
+await bucket.PutObject("hello.txt", "Hello, S3!"u8, "text/plain");
 
-app.MapPost("/upload", async (HttpRequest request, S3Client client) =>
-{
-    var form = await request.ReadFormAsync();
-    var file = form.Files["file"];
-    if (file == null)
-        return Results.BadRequest("No file uploaded.");
+var received = await bucket.GetObject("hello.txt");
+var readText = received.ResponseStream.ReadAsString();
 
-    var bucketName = "one";
-    var fileName = file.FileName;
-
-    using var stream = file.OpenReadStream();
-    await client.PutObject(bucketName, fileName, stream, file.ContentType);
-
-    return Results.Ok(new { fileName });
-});
+app.Logger.LogInformation("Received: '{readText}'. Web Console: {consoleUrl}",
+    readText, "http://localhost:9001");
 
 app.Run();
