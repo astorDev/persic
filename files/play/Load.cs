@@ -41,6 +41,29 @@ public class Load
     }
 
     [TestMethod]
+    public async Task SemiRawSimple()
+    {
+        var client = await Connect.RawClient();
+        var content = "Hello from semiraw upload!"u8;
+
+        using var stream = new MemoryStream(content.ToArray());
+        var response = await client.PutObject(
+            bucketName: "tests",
+            key: "semiraw-uploaded.txt",
+            stream,
+            contentType: "text/plain"
+        );
+
+        var returned = await client.GetObject("tests", "semiraw-uploaded.txt");
+
+        var contentRead = returned.ResponseStream.ReadAsString();
+
+        Console.WriteLine("Content read: " + contentRead);
+
+        contentRead.ShouldBe("Hello from semiraw upload!");
+    }
+
+    [TestMethod]
     public async Task RawPresignedUrl()
     {
         var client = await Connect.RawClient();
@@ -78,6 +101,22 @@ public class Load
 
     [TestMethod]
     public async Task Simple()
+    {
+        var client = Connect.TestClient();
+
+        await client.PutObject("tests", "simple-uploaded.txt", "Hello from simple upload!"u8, "text/plain");
+
+        var returned = await client.GetObject("tests", "simple-uploaded.txt");
+
+        var contentRead = returned.ResponseStream.ReadAsString();
+
+        Console.WriteLine("Content read: " + contentRead);
+
+        contentRead.ShouldBe("Hello from simple upload!");
+    }
+
+    [TestMethod]
+    public async Task BucketedSimple()
     {
         var bucket = await Connect.TestBucket();
 

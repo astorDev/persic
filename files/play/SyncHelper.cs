@@ -4,4 +4,9 @@ public static class SyncHelper
     {
         return task.GetAwaiter().GetResult();
     }
+
+    public static void Sync(this Task task)
+    {
+        task.GetAwaiter().GetResult();
+    }
 }

@@ -28,17 +28,22 @@ public static class S3ObjectExtensions
         return client.PutObjectAsync(request);
     }
 
-    public static async Task<PutObjectResponse> PutObject(this AmazonS3Client client, string bucketName, string key, byte[] inputBytes, string contentType)
+    public static async Task<PutObjectResponse> PutObject(this AmazonS3Client client,
+        string bucketName, string key, byte[] inputBytes, string contentType)
     {
         using var stream = new MemoryStream(inputBytes);
         return await client.PutObject(bucketName, key, stream, contentType);
     }
 
-    public static Task<PutObjectResponse> PutObject(this AmazonS3Client client, string bucketName, string key, ReadOnlySpan<byte> span, string contentType)
+    public static Task<PutObjectResponse> PutObject(this AmazonS3Client client,
+        string bucketName, string key, ReadOnlySpan<byte> span, string contentType)
     {
         return client.PutObject(bucketName, key, span.ToArray(), contentType);
     }
+}
 
+public static class S3BucketClientObjectExtensions
+{
     public static async Task<GetObjectResponse> GetObject(this S3BucketClient bucket, string key)
         => await bucket.Client.GetObject(bucket.Name, key);
 

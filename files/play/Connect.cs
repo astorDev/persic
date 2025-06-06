@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
 
@@ -7,7 +8,7 @@ namespace Persic.Files.Playground;
 public class Connect
 {
     [TestMethod]
-    public void RawMinio()
+    public async Task RawMinio()
     {
         var config = new AmazonS3Config
         {
@@ -16,11 +17,38 @@ public class Connect
         };
 
         var client = new AmazonS3Client("minio", "minioP@ssw0rd", config);
-        var buckets = client.ListBucketsAsync().Sync();
+        var response = await client.ListBucketsAsync();
 
-        foreach (var bucket in buckets.Buckets)
+        Console.WriteLine("Received buckets list");
+
+        foreach (var bucket in response.Buckets)
             Console.WriteLine($"Bucket: {bucket.BucketName}, Created: {bucket.CreationDate}");
     }
+
+    [TestMethod]
+    public void SyncedRawMinio() => RawMinio().Sync();
+
+    [TestMethod]
+    public async Task SemiRawMinio()
+    {
+        var config = new AmazonS3Config
+        {
+            ServiceURL = "http://localhost:9000",
+            ForcePathStyle = true
+        };
+
+        var client = new AmazonS3Client("minio", "minioP@ssw0rd", config);
+
+        var response = await client.ListBuckets();
+
+        Console.WriteLine("Received buckets list");
+
+        foreach (var bucket in response.Buckets)
+            Console.WriteLine($"Bucket: {bucket.BucketName}, Created: {bucket.CreationDate}");
+    }
+
+    [TestMethod]
+    public void SyncedSemiRawMinio() => SemiRawMinio().Sync();
 
     [TestMethod]
     public void Minio()
@@ -34,7 +62,7 @@ public class Connect
     }
 
     [TestMethod]
-    [ExpectedException(typeof(BucketAlreadyOwnedByYouException))]
+    //[ExpectedException(typeof(BucketAlreadyOwnedByYouException))]
     public async Task RawWithBucket()
     {
         var config = new AmazonS3Config
@@ -50,14 +78,39 @@ public class Connect
             BucketName = "tests",
             UseClientRegion = true
         });
+
+        Console.WriteLine("Bucket 'tests' created or already exists.");
     }
 
     [TestMethod]
-    public async Task LibBucket()
+    //[ExpectedException(typeof(BucketAlreadyOwnedByYouException))]
+    public async Task SemiRawWithBucket()
+    {
+        var config = new AmazonS3Config
+        {
+            ServiceURL = "http://localhost:9000",
+            ForcePathStyle = true
+        };
+
+        var client = new AmazonS3Client("minio", "minioP@ssw0rd", config);
+
+        await client.PutBucket(new PutBucketRequest
+        {
+            BucketName = "tests",
+            UseClientRegion = true
+        });
+
+        Console.WriteLine("Bucket 'tests' created or already exists.");
+    }
+
+    [TestMethod]
+    public async Task Bucket()
     {
         var client = new S3Client("ServiceURL=http://localhost:9000;AccessKeyId=minio;SecretAccessKey=minioP@ssw0rd;ForcePathStyle=true");
 
         await client.PutBucketClient("tests");
+
+        Console.WriteLine("Bucket 'tests' created or already exists.");
     }
 
     public static S3Client TestClient()
