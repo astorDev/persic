@@ -4,36 +4,43 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Persic;
 
-public partial class S3Client
+public static class S3ClientBucketMethodsExtensions
 {
-    public async Task<PutBucketResponse> PutBucket(PutBucketRequest request)
+    public static async Task<ListBucketsResponse> ListBuckets(this AmazonS3Client client)
+    {
+        var response = await client.ListBucketsAsync();
+        response.Buckets ??= [];
+        return response;
+    }
+
+    public static async Task<PutBucketResponse> PutBucket(this AmazonS3Client client, PutBucketRequest request)
     {
         try
         {
-            return await PutBucketAsync(request);
+            return await client.PutBucketAsync(request);
         }
         catch (AmazonS3Exception ex) when (ex.ErrorCode == "BucketAlreadyExists" || ex.ErrorCode == "BucketAlreadyOwnedByYou")
         {
             return new PutBucketResponse();
         }
     }
+
+    public static async Task<PutBucketResponse> PutBucket(this AmazonS3Client client, string bucketName) =>
+        await client.PutBucket(new PutBucketRequest
+        {
+            BucketName = bucketName,
+            UseClientRegion = true
+        });
 }
 
-public partial record S3BucketClient(S3Client Client, string Name)
+public partial record S3BucketClient(AmazonS3Client Client, string Name)
 {
     public async Task<PutBucketResponse> EnsureInited() => await Client.PutBucket(Name);
 }
 
 public static class BucketExtensions
 {
-    public static async Task<PutBucketResponse> PutBucket(this S3Client client, string bucketName) =>
-        await client.PutBucket(new PutBucketRequest
-        {
-            BucketName = bucketName,
-            UseClientRegion = true
-        });
-
-    public static S3BucketClient Bucket(this S3Client client, string bucketName)
+    public static S3BucketClient Bucket(this AmazonS3Client client, string bucketName)
     {
         return new S3BucketClient(client, bucketName);
     }
@@ -48,7 +55,7 @@ public static class BucketExtensions
         return builder;
     }
 
-    public static async Task<S3BucketClient> PutBucketClient(this S3Client client, string bucketName)
+    public static async Task<S3BucketClient> PutBucketClient(this AmazonS3Client client, string bucketName)
     {
         await client.PutBucket(bucketName);
         return new S3BucketClient(client, bucketName);

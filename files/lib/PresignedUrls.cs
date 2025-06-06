@@ -3,21 +3,17 @@ using Amazon.S3.Model;
 
 namespace Persic;
 
-public partial class S3Client : AmazonS3Client
+public static class PresignedUrlsExtensions
 {
-    public string GetPresignedUrl(GetPreSignedUrlRequest request)
+    public static string GetPresignedUrl(this AmazonS3Client client, GetPreSignedUrlRequest request)
     {
-        var rawPresignedUrl = GetPreSignedURL(request);
+        var rawPresignedUrl = client.GetPreSignedURL(request);
 
-        return Config.ServiceURL.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+        return client.Config.ServiceURL.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
             ? rawPresignedUrl.Replace("https://", "http://")
             : rawPresignedUrl;
     }
-}
-
-public static class PresignedUrlsExtensions
-{
-    public static string GetPresignedUrl(this S3Client client, string bucketName, string key, DateTime expires, HttpVerb verb = HttpVerb.GET)
+    public static string GetPresignedUrl(this AmazonS3Client client, string bucketName, string key, DateTime expires, HttpVerb verb = HttpVerb.GET)
     {
         var request = new GetPreSignedUrlRequest
         {
@@ -30,7 +26,7 @@ public static class PresignedUrlsExtensions
         return client.GetPresignedUrl(request);
     }
 
-    public static string GetPresignedUrl(this S3Client client, string bucketName, string key, int expiresAfterMinutes = 10, HttpVerb verb = HttpVerb.GET)
+    public static string GetPresignedUrl(this AmazonS3Client client, string bucketName, string key, int expiresAfterMinutes = 10, HttpVerb verb = HttpVerb.GET)
         => client.GetPresignedUrl(bucketName, key, DateTime.UtcNow.AddMinutes(expiresAfterMinutes), verb);
 
     public static string GetPresignedUrl(this S3BucketClient bucket, string key, DateTime expires, HttpVerb verb = HttpVerb.GET)
