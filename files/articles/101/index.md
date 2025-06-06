@@ -14,7 +14,7 @@ In this article, we will experiment with managing files in S3 using C#. We'll go
 
 First things first, we'll need an S3 instance to play around with. In 2006, you would need to get an AWS account and create an instance there. Gladly, a long time has passed since then and now we have open source tools, which are fully S3 compatible and require no account whatsoever. Perhaps the most popular tool of the kind is MinIO.
 
-Let's deploy its local instance via docker. Here's a `compose.yml` we'll use:
+Let's deploy its local instance via Docker. Here's a `compose.yml` we'll use:
 
 ```yaml
 services:
@@ -32,7 +32,7 @@ services:
 
 With that in place, we can `docker compose up -d` our S3-compatible storage into existence. 
 
-What's also cool about MinIO is that it comes with a web UI out of the box and we can reach it on the [http://localhost:9001](http://localhost:9001) straight away. Here's what the web console should look like:
+What's also cool about MinIO is that it comes with a web UI out of the box, and we can reach it on [http://localhost:9001](http://localhost:9001) straight away. Here's what the web console should look like:
 
 ![](minio.png)
 
