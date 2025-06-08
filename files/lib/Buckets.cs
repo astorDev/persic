@@ -33,14 +33,14 @@ public static class S3ClientBucketMethodsExtensions
         });
 }
 
-public partial record S3BucketClient(AmazonS3Client Client, string Name)
+public partial record S3BucketClient(S3Client Client, string Name)
 {
     public async Task<PutBucketResponse> EnsureInited() => await Client.PutBucket(Name);
 }
 
 public static class BucketExtensions
 {
-    public static S3BucketClient Bucket(this AmazonS3Client client, string bucketName)
+    public static S3BucketClient Bucket(this S3Client client, string bucketName)
     {
         return new S3BucketClient(client, bucketName);
     }
@@ -55,7 +55,7 @@ public static class BucketExtensions
         return builder;
     }
 
-    public static async Task<S3BucketClient> PutBucketClient(this AmazonS3Client client, string bucketName)
+    public static async Task<S3BucketClient> PutBucketClient(this S3Client client, string bucketName)
     {
         await client.PutBucket(bucketName);
         return new S3BucketClient(client, bucketName);

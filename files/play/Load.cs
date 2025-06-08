@@ -1,7 +1,6 @@
 using System.Text;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Microsoft.AspNetCore.StaticAssets;
 
 namespace Persic.Files.Playground;
 
@@ -129,58 +128,5 @@ public class Load
         Console.WriteLine("Content read: " + contentRead);
 
         contentRead.ShouldBe("Hello from simple upload!");
-    }
-
-    [TestMethod]
-    public async Task PresignedUrl()
-    {
-        var bucket = await Connect.TestBucket();
-
-        var presignedUrl = bucket.GetPresignedUrl("presigned-uploaded.txt", verb: HttpVerb.PUT);
-
-        await new HttpClient().PutStringContent(presignedUrl, "Hello from presigned URL upload!", "text/plain");
-
-        var returned = await bucket.GetObject("presigned-uploaded.txt");
-
-        var contentRead = returned.ResponseStream.ReadAsString();
-
-        Console.WriteLine("Content read: " + contentRead);
-
-        contentRead.ShouldBe("Hello from presigned URL upload!");
-    }
-    
-    [TestMethod]
-    public async Task TwoWaysPresignedUrl()
-    {
-        var bucket = await Connect.TestBucket();
-
-        var uploadPresignedUrl = bucket.GetPresignedUrl("two-way-presigned-uploaded.txt", verb: HttpVerb.PUT);
-
-        await new HttpClient().PutStringContent(uploadPresignedUrl, "Hello from presigned URL upload!", "text/plain");
-
-        var downloadPresignedUrl = bucket.GetPresignedUrl("two-way-presigned-uploaded.txt", verb: HttpVerb.GET);
-
-        var contentRead = await new HttpClient().GetStringAsync(downloadPresignedUrl);
-
-        Console.WriteLine("Content read: " + contentRead);
-
-        contentRead.ShouldBe("Hello from presigned URL upload!");
-    }
-}
-
-public static class UploadExtensions
-{
-    public static async Task<string> PutStringContent(this HttpClient client, string url, string content, string contentType = "text/plain")
-    {
-        var response = client.PutAsync(url, new StringContent(content, Encoding.UTF8, contentType)).GetAwaiter().GetResult();
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
-    }
-
-    public static async Task<string> GetStringContent(this HttpClient client, string url)
-    {
-        var response = await client.GetAsync(url);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
     }
 }

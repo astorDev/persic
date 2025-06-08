@@ -19,7 +19,27 @@ public class ConnectionString(Dictionary<string, string> source) : Dictionary<st
         return new ConnectionString(dictionary);
     }
 
-    public string GetRequiredStringValue(string key)
+    public string? SearchStringValue(string key)
+    {
+        if (TryGetValue(key, out var value))
+        {
+            return value;
+        }
+
+        return null;
+    }
+
+    public T? Search<T>(string key, Func<string, T> parser) where T : class
+    {
+        if (TryGetValue(key, out var value))
+        {
+            return parser(value);
+        }
+
+        return null;
+    }
+
+    public string GetStringValue(string key)
     {
         if (TryGetValue(key, out var value))
         {
