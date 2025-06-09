@@ -1,0 +1,53 @@
+# @name upload
+@expired = {{ new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString() }}
+PUT /upload
+
+{
+    "bucketName" : "my-web-app",
+    "key" : "{{ $guid }}",
+    "expires" : "{{ expired }}",
+    "contentType" : "text/plain"
+}
+
+
+###
+# @ref upload
+GET {{ upload.url }}
+
+###
+# @name mini
+GET /upload-mini
+
+###
+# @ref mini
+PUT {{ mini.url }}
+
+< dummy.txt
+
+###
+# @name minidown
+GET /download-mini
+
+###
+# @ref minidown
+GET {{ minidown.url }}
+
+###
+# @name pdfup
+GET /pdf/upload
+
+###
+# @ref pdfup
+PUT {{ pdfup.url }}
+Content-Type: application/pdf
+
+< dummy.pdf
+
+###
+# @name pdfdown
+GET /pdf/download
+
+###
+# @ref pdfdown
+GET {{ pdfdown.url }}
+Content-Type: application/pdf

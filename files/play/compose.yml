@@ -9,3 +9,14 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minioP@ssw0rd
     command: server /data --console-address ":9001"
+
+  playground:
+    init: true # 
+    profiles: [ all ]
+    build:
+      context: ..
+      dockerfile: play/Dockerfile
+    environment:
+      ConnectionStrings__S3: "ServiceURL=http://minio:9000;AccessKeyId=minio;SecretAccessKey=minioP@ssw0rd;ForcePathStyle=true;ExposedBaseUrl=http://localhost:9000"
+    ports:
+      - "18433:8080"

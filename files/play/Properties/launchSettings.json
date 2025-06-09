@@ -7,7 +7,9 @@
       "launchBrowser": false,
       "applicationUrl": "http://localhost:18433",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        //"ConnectionStrings:S3" : "ServiceURL=http://minio:9000;AccessKeyId=minio;SecretAccessKey=minioP@ssw0rd;ForcePathStyle=true;ExposedBaseUrl=http://localhost:9000",
+        "ConnectionStrings:S3" : "ServiceURL=http://minio:9000;AccessKeyId=minio;SecretAccessKey=minioP@ssw0rd;ForcePathStyle=true;ExposedBaseUrl=http://localhost:9000",
       }
     }
   }

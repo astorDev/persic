@@ -35,3 +35,9 @@ v-play:
 
 test:
 	dotnet test --filter FullyQualifiedName~Persic.Files.Playground.$(NAME) --logger "console;verbosity=detailed"
+
+build:
+	docker compose --profile all build
+
+up:
+	docker compose --profile all up -d
