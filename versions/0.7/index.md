@@ -1,0 +1,3 @@
+- [ ] `Persic.Mongo` <VERSION>
+    - [x] `Configuration` support
+    - [x] `TimeToLive` index support

@@ -4,7 +4,7 @@ using MongoDB.Driver;
 namespace Persic;
 
 public static class MongoDependencyInjection {
-    public static CollectionBuilder AddMongo(
+    public static MongoRegistrationBuilder AddMongo(
         this IServiceCollection services, 
         Func<IServiceProvider, IMongoClient> clientFactory, 
         string databaseName
@@ -16,21 +16,18 @@ public static class MongoDependencyInjection {
             return client.GetDatabase(databaseName);
         });
 
-        return new CollectionBuilder(services);
+        services.AddScoped<MongoConfigurationManager>();
+
+        return new MongoRegistrationBuilder(services);
     }
 
-    public static CollectionBuilder AddMongo(
+    public static MongoRegistrationBuilder AddMongo(
         this IServiceCollection services,
         string connectionString,
         string databaseName
     ) => services.AddMongo(sp => new MongoClient(connectionString), databaseName);
 
-    public class CollectionBuilder(IServiceCollection services) {
-        public CollectionBuilder AddCollection<T>(string name) {
-            services.AddMongoCollection<T>(name);
-            return this;
-        }
-    }
+    
 
     public static IServiceCollection AddMongoCollection<T>(this IServiceCollection services, string name)
     {
