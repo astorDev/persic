@@ -1,3 +1,5 @@
 - [ ] `Persic.Mongo` <VERSION>
     - [x] `Configuration` support
     - [x] `TimeToLive` index support
+- [ ] `Persic.Core` <VERSION>
+    - [ ] `ConnectionString`
