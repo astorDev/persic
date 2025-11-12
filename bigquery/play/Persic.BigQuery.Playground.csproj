@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Cloud.BigQuery.V2" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
     <PackageReference Include="MSTest" Version="3.9.1" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
@@ -21,6 +20,10 @@
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
     <Using Include="Shouldly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\lib\Persic.BigQuery.csproj" />
   </ItemGroup>
 
 </Project>
