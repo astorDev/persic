@@ -11,8 +11,9 @@ public class Stubs
         var sql = File.ReadAllText($"../../../Stubs/{name}.sql");
         var result = Context.Client.ExecuteQuery(sql, null);
 
-        var markdownTable = result.ToMarkdownTable();
+        var markdownTable = result.ToMarkdownTable($"Query Result (top 50 of {result.TotalRows})", limit: 50);
         Console.WriteLine(markdownTable);
         File.WriteAllText($"../../../Stubs/buffer.{name}.md", markdownTable);
+        File.WriteAllText($"../../../Stubs/buffer.{name}.csv", result.ToCsv(limit: 50));
     }
 }

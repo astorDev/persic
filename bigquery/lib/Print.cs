@@ -26,13 +26,31 @@ public static class BigQueryPrintExtensions
         return header + "\n" + separator;
     }
 
-    public static string ToMarkdownTable(this BigQueryResults results)
+    public static string ToMarkdownTable(this BigQueryResults results, string header = "", int limit = 100)
     {
         var sb = new StringBuilder();
+        if (!string.IsNullOrEmpty(header))
+        {
+            sb.AppendLine(header);
+            sb.AppendLine();
+        }
+        
         sb.AppendLine(results.Schema.ToMarkdownTableHeader());
-        foreach (var row in results)
+        foreach (var row in results.Take(limit))
         {
             sb.AppendLine(row.ToString(" | "));
+        }
+
+        return sb.ToString();
+    }
+
+    public static string ToCsv(this BigQueryResults results, int limit = 100)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine(results.Schema.ToString(","));
+        foreach (var row in results.Take(limit))
+        {
+            sb.AppendLine(row.ToString(","));
         }
 
         return sb.ToString();
