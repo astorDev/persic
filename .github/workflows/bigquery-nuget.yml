@@ -1,0 +1,17 @@
+name: Persic.BigQuery NuGet
+on:
+  push:
+    paths:
+      - 'bigquery/lib/**'
+      - '.github/workflows/bigquery-nuget.yaml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Pack & Publish nuget
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astorDev/versy/calver/nuget@main
+        with:
+          project: bigquery/lib/Persic.BigQuery
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}

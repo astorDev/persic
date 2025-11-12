@@ -57,6 +57,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bigquery", "bigquery", "{60
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persic.BigQuery.Playground", "bigquery\play\Persic.BigQuery.Playground.csproj", "{A75A8CDC-E721-45E4-8FD5-2643DD5A76D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persic.BigQuery", "bigquery\lib\Persic.BigQuery.csproj", "{16CAF880-132F-43D1-9F23-FB82F53BD4DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{A75A8CDC-E721-45E4-8FD5-2643DD5A76D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A75A8CDC-E721-45E4-8FD5-2643DD5A76D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A75A8CDC-E721-45E4-8FD5-2643DD5A76D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16CAF880-132F-43D1-9F23-FB82F53BD4DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16CAF880-132F-43D1-9F23-FB82F53BD4DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16CAF880-132F-43D1-9F23-FB82F53BD4DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16CAF880-132F-43D1-9F23-FB82F53BD4DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,5 +159,6 @@ Global
 		{BE2C2003-E4EC-437B-A5CD-E1BBB8638B4F} = {49179F8B-DEC4-4D5D-8B4C-3AEB0442C4A3}
 		{D611111A-31FF-4AAA-84F1-08AD539B3B88} = {49179F8B-DEC4-4D5D-8B4C-3AEB0442C4A3}
 		{A75A8CDC-E721-45E4-8FD5-2643DD5A76D7} = {60FF8CFA-EE52-4DB8-837B-CCCA54CAD287}
+		{16CAF880-132F-43D1-9F23-FB82F53BD4DD} = {60FF8CFA-EE52-4DB8-837B-CCCA54CAD287}
 	EndGlobalSection
 EndGlobal
