@@ -38,4 +38,11 @@ public static class MongoDependencyInjection {
 
         return services;
     }
+
+    public static IServiceCollection AddOpenMongoCollections(this IServiceCollection services)
+    {
+        services.AddSingleton(typeof(IMongoCollection<>) , typeof(MongoCollection<>));
+
+        return services;
+    }
 }
