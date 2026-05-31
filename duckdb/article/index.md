@@ -166,7 +166,7 @@ GROUP BY c.country
 ORDER BY SUM(o.amount * (1 - t.rate)) DESC
 ```
 
-```csv
+```text
 ┌───────────────────┬─────────────┐
 │ total_amount_post │   country   │
 │      double       │   varchar   │
