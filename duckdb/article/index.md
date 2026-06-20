@@ -18,7 +18,7 @@ At first, we, of course, have to install the tool. On Mac, with brew installed, 
 brew install duckdb
 ```
 
-After that, we need data to query. We'll name our first database `orders-2025.csv` and have the following content in it:
+After that, we need data to query. We'll create our first data file, `orders-2025.csv`, with the following content:
 
 > How cool is the fact that I can "embed" our "database" in the article, huh?
 
@@ -33,15 +33,15 @@ electronics,300,4
 clothing,20,3
 ```
 
-Now, let's make the magic happen. There are interactive and non-interactive modes in duckdb. For the reproducibility of the first step, we'll go with the non-interactive one. For that, we'll need to create a file with our query; let's call it `2025-category-amount.sql`. And here's the query itself:
+Now, let's make the magic happen. There are interactive and non-interactive modes in DuckDB. For the reproducibility of the first step, we'll go with the non-interactive one. For that, we'll need to create a file with our query; let's call it `2025-category-amount.sql`. And here's the query itself:
 
 > For the next scripts, I will just show you the SQL itself without naming it or providing a command to run it
 > You can use CLI in interactive mode this way:
-> 1. Type duckdb, hitting enter - welcome into interactive mode
+> 1. Type `duckdb` and press Enter — welcome to interactive mode
 > 2. Type your query
-> 3. Type semicolon (;) at the end - I always forgot to do that
-> 4. Hit Enter
-> Ctrl + D when you are finished
+> 3. Type a semicolon (`;`) at the end — I always forget to do that
+> 4. Press Enter
+> Press Ctrl+D when you are finished
 
 ```sql
 SELECT SUM(amount), category
@@ -125,7 +125,7 @@ Let's say now we also get a next export, and now instead of a CSV, all we got is
 ]
 ```
 
-Do we need to install a converter first to feed DuckDB the CSV? Not really; we can pretend that nothing happened and do the following:
+Do we need to install a converter first to feed DuckDB the JSON? Not really; we can pretend that nothing happened and do the following:
 
 ```sql
 SELECT COUNT(*), country
@@ -175,7 +175,7 @@ In a normal article, I would expect that I would have to show you some trick or 
 ```
 
 But what if you don't even want to store a file on your local drive?
-For this scenario, I put `taxes.csv` on github so that it is publicly available via the link: [https://raw.githubusercontent.com/astorDev/persic/refs/heads/main/duckdb/play/taxes.csv](https://raw.githubusercontent.com/astorDev/persic/refs/heads/main/duckdb/play/taxes.csv). Here's the file content:
+For this scenario, I put `taxes.csv` on GitHub so that it is publicly available via the link: [https://raw.githubusercontent.com/astorDev/persic/refs/heads/main/duckdb/play/taxes.csv](https://raw.githubusercontent.com/astorDev/persic/refs/heads/main/duckdb/play/taxes.csv). Here's the file content:
 
 ```csv
 country,rate
@@ -220,6 +220,6 @@ The last query in this article demonstrates the impressive capabilities of DuckD
 - JOIN files across formats
 - Use a remote file in the same query.
 
-You can find all the scripts along with the example files in the [persic](https://github.com/astorDev/persic/duckdb/files/src) repository. The project is all about persistence technologies and provides various DB-related tools. Check it out on [GitHub](https://github.com/astorDev/persic) and don't hesitate to give it a star! ⭐
+You can find all the scripts along with the example files in the [persic](https://github.com/astorDev/persic/tree/main/duckdb/play) repository. The project is all about persistence technologies and provides various DB-related tools. Check it out on [GitHub](https://github.com/astorDev/persic) and don't hesitate to give it a star! ⭐
 
 Claps for this article are also highly appreciated! 😉
